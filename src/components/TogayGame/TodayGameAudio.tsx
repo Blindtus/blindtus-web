@@ -165,11 +165,11 @@ const TodayGameAudio = () => {
     return (
       <Button
         size="lg"
-        onClick={isMobileDevice() ? handleLoadMusic : handlePlaySong}
+        onClick={isMobileDevice() && !isAudioLoaded ? handleLoadMusic : handlePlaySong}
         disabled={!music || !isAudioLoaded}
         className="w-full sm:w-auto"
       >
-        {!isMobileDevice() && isAudioLoaded ? (
+        {isMobileDevice() && !isAudioLoaded ? (
           __('!noun:load-song')
         ) : isAudioLoaded ? (
           <>
