@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { useTodayGame } from '@/context/TodayGameContext';
 import useViewport from '@/hooks/use-viewport';
 import { TodayGameValidation } from '@/lib/validations/today';
+import { isMobileDevice } from '@/utils/deviceUtils';
 import { type SimilarityStatusType, similarityStatus } from '@/utils/similarityUtils';
 
 import TodayGameStatus from './TodayGameStatus';
@@ -75,6 +76,12 @@ const TodayGameAudio = () => {
 
   const handleAudioLoaded = useCallback(() => {
     setIsAudioLoaded(true);
+  }, []);
+
+  const handleLoadMusic = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.load();
+    }
   }, []);
 
   const isAudioPlaying = useMemo(() => {
@@ -154,11 +161,37 @@ const TodayGameAudio = () => {
     return __('!noun:skip');
   }, [isXs, watchAnswer, __]);
 
+  const buttonRender = useMemo(() => {
+    return (
+      <Button
+        size="lg"
+        onClick={isMobileDevice() ? handleLoadMusic : handlePlaySong}
+        disabled={!music || !isAudioLoaded}
+        className="w-full sm:w-auto"
+      >
+        {!isMobileDevice() && isAudioLoaded ? (
+          __('!noun:load-song')
+        ) : isAudioLoaded ? (
+          <>
+            <PlayCircle className="mr-2" /> {__('!noun:play-song')}
+          </>
+        ) : (
+          <Loader />
+        )}
+      </Button>
+    );
+  }, [__, handleLoadMusic, handlePlaySong, isAudioLoaded, music]);
+
   return (
     <div className="flex flex-col gap-4">
       {!isCompleted ? <ProgressBar value={progress} limit={TIMERS[currentStep]} /> : null}
       {music ? (
-        <audio src={music.audioPath || ''} ref={audioRef} onCanPlay={handleAudioLoaded} />
+        <audio
+          src={music.audioPath || ''}
+          ref={audioRef}
+          onCanPlay={handleAudioLoaded}
+          preload="auto"
+        />
       ) : isLoading ? (
         <Loader />
       ) : (
@@ -191,19 +224,7 @@ const TodayGameAudio = () => {
 
       {status ? <TodayGameStatus status={status} /> : null}
 
-      <div>
-        {!isAudioPlaying ? (
-          <Button size="lg" onClick={handlePlaySong} disabled={!music} className="w-full sm:w-auto">
-            {!music || !isAudioLoaded ? (
-              <Loader />
-            ) : (
-              <>
-                <PlayCircle className="mr-2" /> {__('!noun:play-song')}
-              </>
-            )}
-          </Button>
-        ) : null}
-      </div>
+      <div>{!isAudioPlaying ? buttonRender : null}</div>
     </div>
   );
 };

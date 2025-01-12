@@ -24,6 +24,10 @@ const translations = {
     null,
     "Vide"
   ],
+  "!noun:load-song": [
+    null,
+    "Charger la musique"
+  ],
   "!noun:movie": [
     null,
     "film"
