@@ -4,9 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Check, CircleAlert, Copy } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { usePlausible } from 'next-plausible';
 
 import { useGetToday } from '@/lib/react-query/TodayQueries';
 import { copyToClipboardTodayHistoryGamnes } from '@/utils/copyUtils';
+import { getTodayHistoryByTodayId } from '@/utils/historyUtils';
 
 import { Button } from '../ui/button';
 
@@ -18,8 +20,17 @@ const ShareTodayResults = ({ className = '' }: ShareTodayResultsProps) => {
   const __ = useTranslations();
   const [isCopied, setIsCopied] = useState(false);
   const [isError, setIsError] = useState(false);
+  const plausible = usePlausible();
 
   const { data: today, isFetching } = useGetToday();
+
+  const history = useMemo(() => {
+    if (!today || !today._id) {
+      return null;
+    }
+
+    return getTodayHistoryByTodayId(today?._id);
+  }, [today]);
 
   useEffect(() => {
     // reset stated after 2 seconds
@@ -44,7 +55,8 @@ const ShareTodayResults = ({ className = '' }: ShareTodayResultsProps) => {
     const response = await copyToClipboardTodayHistoryGamnes(today?._id);
     setIsCopied(true);
     setIsError(response.isError);
-  }, [today]);
+    plausible('share');
+  }, [plausible, today]);
 
   const message = useMemo(() => {
     if (isCopied) {
@@ -79,7 +91,7 @@ const ShareTodayResults = ({ className = '' }: ShareTodayResultsProps) => {
   }
 
   return (
-    <Button className={className} variant={buttonVariant} onClick={handleClick}>
+    <Button className={className} variant={buttonVariant} onClick={handleClick} disabled={!history}>
       {message}
     </Button>
   );

@@ -1,81 +1,158 @@
 const translations = {
   messages: {
-    '!error:no-audio': [null, 'Aucun audio trouvé !'],
-    '!error:user-invalid-token': [null, 'Token invalide passé dans la requête'],
-    '!noun:actors': [null, 'Acteurs'],
-    '!noun:avatar-color': [null, 'Couleur'],
-    '!noun:avatar-eyes': [null, 'Yeux'],
-    '!noun:avatar-mouth': [null, 'Bouche'],
-    '!noun:avatar-shape': [null, 'Forme'],
-    '!noun:avatar-sides': [null, 'Oreilles'],
-    '!noun:avatar-texture': [null, 'Texture'],
-    '!noun:avatar-top': [null, 'Chapeau'],
-    '!noun:close': [null, 'Fermer'],
-    '!noun:clue': [null, 'Indice {clue}'],
-    '!noun:confirm': [null, 'Confirmer'],
-    '!noun:confirm-new-password': [null, 'Confirmer le nouveau mot de passe'],
-    '!noun:current-password': [null, 'Mot de passe actuel'],
-    '!noun:edit-avatar-title': [null, "Modifier l'avatar"],
-    '!noun:email': [null, 'E-mail'],
-    '!noun:empty': [null, 'Vide'],
-    '!noun:movie': [null, 'film'],
-    '!noun:music': [null, 'Musique'],
-    '!noun:new-password': [null, 'Nouveau mot de passe'],
-    '!noun:overview': [null, 'Synopsys'],
-    '!noun:password': [null, 'Mot de passe'],
-    '!noun:play': [null, 'Jouer'],
-    '!noun:play-song': [null, 'Jouer la musique'],
-    '!noun:reset-password': [null, 'Sauvegarder le mot de passe'],
-    '!noun:returning-serie': [null, 'En cours'],
-    '!noun:save-modification': [null, 'Sauvegarder les modifications'],
-    '!noun:send': [null, 'Envoyer'],
-    '!noun:send-answer': [null, 'Envoyer la réponse'],
-    '!noun:show': [null, 'Voir'],
-    '!noun:signin': [null, 'Se connecter'],
-    '!noun:skip': [null, 'Passer'],
-    '!noun:tv': [null, 'série tv'],
-    '!noun:update': [null, 'Mettre à jour'],
-    '!noun:update-account-title': [null, 'Mettre à jour le compte'],
-    '!noun:update-password-title': [null, 'Modifier le mot de passe'],
-    '!noun:username': [null, "Nom d'utilisateur"],
-    '!noun:your-answers': [null, 'Vos réponses'],
-    '!text:account-updated': [null, 'Compte mis à jour'],
-    '!text:avatar-updated': [null, 'Avatar sauvegardé'],
-    '!text:back-signin': [null, 'Retour à la connexion'],
-    '!text:clue-actors': [null, 'Acteurs :'],
-    '!text:clue-broadcast-years': [null, 'Diffusion :'],
-    '!text:clue-directors': [null, 'Réalisateurs :'],
-    '!text:clue-genres': [null, 'Genres :'],
-    '!text:clue-overview': [null, 'Synopsis :'],
-    '!text:clue-release-date': [null, 'Date de sortie :'],
-    '!text:confirm-with-password': [null, 'Confirmez avec le mot de passe'],
-    '!text:copy-error': [null, 'Impossible de copier'],
-    '!text:copy-results': [null, 'Copier les résultats'],
-    '!text:copy-success': [null, 'Résultats copiés dans le presse-papiers'],
-    '!text:email-sent': [null, 'E-mail envoyé'],
-    '!text:failed-authenticate': [null, "Échec de l'authentification de l'utilisateur"],
-    '!text:failed-signin': [null, 'Échec de la connexion'],
-    '!text:forgot-button': [null, 'Envoyer les instructions de réinitialisation'],
-    '!text:forgot-password': [null, 'Mot de passe perdu ?'],
-    '!text:forgot-password-description': [
-      null,
-      "Entrez l'adresse e-mail que vous avez utilisée lors de votre inscription et nous vous enverrons les instructions pour réinitialiser votre mot de passe.",
-    ],
-    '!text:forgot-password-title': [null, 'Mot de passe oublié ?'],
-    '!text:last-try': [null, 'Dernier essai'],
-    '!text:lookingForMediaType': [null, 'Nous recherchons un'],
-    '!text:no-try': [null, 'Aucun essai'],
-    '!text:password-reset-expired': [
-      null,
-      'Le lien pour réinitialiser votre mot de passe a expiré. Veuillez en demander un nouveau.',
-    ],
-    '!text:password-reset-success': [null, 'Réinitialisation du mot de passe réussie'],
-    '!text:password-reset-title': [null, 'Réinitialisez votre mot de passe'],
-    '!text:password-updated': [null, 'Mot de passe mis à jour'],
-    '!text:redirectTodayGameWithCategory': [null, 'Jouer la catégorie {category}'],
-    '!text:signin-title': [null, 'Se connecter à votre compte'],
-    '!text:today-game-title': [null, 'Défis quotidiens'],
-  },
+  "!error:no-audio": [
+    null,
+    "Aucun audio trouvé !"
+  ],
+  "!noun:actors": [
+    null,
+    "Acteurs"
+  ],
+  "!noun:close": [
+    null,
+    "Fermer"
+  ],
+  "!noun:clue": [
+    null,
+    "Indice {clue}"
+  ],
+  "!noun:email": [
+    null,
+    "E-mail"
+  ],
+  "!noun:empty": [
+    null,
+    "Vide"
+  ],
+  "!noun:movie": [
+    null,
+    "film"
+  ],
+  "!noun:music": [
+    null,
+    "Musique"
+  ],
+  "!noun:overview": [
+    null,
+    "Synopsys"
+  ],
+  "!noun:password": [
+    null,
+    "Mot de passe"
+  ],
+  "!noun:play": [
+    null,
+    "Jouer"
+  ],
+  "!noun:play-song": [
+    null,
+    "Jouer la musique"
+  ],
+  "!noun:returning-serie": [
+    null,
+    "En cours"
+  ],
+  "!noun:send": [
+    null,
+    "Envoyer"
+  ],
+  "!noun:send-answer": [
+    null,
+    "Envoyer la réponse"
+  ],
+  "!noun:show": [
+    null,
+    "Voir"
+  ],
+  "!noun:signin": [
+    null,
+    "Se connecter"
+  ],
+  "!noun:skip": [
+    null,
+    "Passer"
+  ],
+  "!noun:tv": [
+    null,
+    "série tv"
+  ],
+  "!noun:your-answers": [
+    null,
+    "Vos réponses"
+  ],
+  "!text:clue-actors": [
+    null,
+    "Acteurs :"
+  ],
+  "!text:clue-broadcast-years": [
+    null,
+    "Diffusion :"
+  ],
+  "!text:clue-directors": [
+    null,
+    "Réalisateurs :"
+  ],
+  "!text:clue-genres": [
+    null,
+    "Genres :"
+  ],
+  "!text:clue-overview": [
+    null,
+    "Synopsis :"
+  ],
+  "!text:clue-release-date": [
+    null,
+    "Date de sortie :"
+  ],
+  "!text:copy-error": [
+    null,
+    "Impossible de copier"
+  ],
+  "!text:copy-results": [
+    null,
+    "Copier les résultats"
+  ],
+  "!text:copy-success": [
+    null,
+    "Résultats copiés dans le presse-papiers"
+  ],
+  "!text:failed-authenticate": [
+    null,
+    "Échec de l'authentification de l'utilisateur"
+  ],
+  "!text:failed-signin": [
+    null,
+    "Échec de la connexion"
+  ],
+  "!text:forgot-password": [
+    null,
+    "Mot de passe perdu ?"
+  ],
+  "!text:last-try": [
+    null,
+    "Dernier essai"
+  ],
+  "!text:lookingForMediaType": [
+    null,
+    "Nous recherchons un"
+  ],
+  "!text:no-try": [
+    null,
+    "Aucun essai"
+  ],
+  "!text:redirectTodayGameWithCategory": [
+    null,
+    "Jouer la catégorie {category}"
+  ],
+  "!text:signin-title": [
+    null,
+    "Se connecter à votre compte"
+  ],
+  "!text:today-game-title": [
+    null,
+    "Défis quotidiens"
+  ]
+}
 };
 
 export default translations;

@@ -84,6 +84,8 @@ const TodayGame = () => {
     );
   }, [__, currentLocale, gameType, isCompleted]);
 
+  // __('!noun:movie')
+  // __('!noun:tv')
   const renderMediaType = useMemo(() => {
     if (!category) {
       return null;

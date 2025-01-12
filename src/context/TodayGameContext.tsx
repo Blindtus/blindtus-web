@@ -10,6 +10,8 @@ import {
   useState,
 } from 'react';
 
+import { usePlausible } from 'next-plausible';
+
 import { TODAY_CATEGORIES } from '@/constants/todayCategories';
 import { useGetToday } from '@/lib/react-query/TodayQueries';
 import type { Music } from '@/types/audio.type';
@@ -60,6 +62,8 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
   const [media, setMedia] = useState<Media | undefined>(undefined);
   const [music, setMusic] = useState<Music | undefined>(undefined);
   const [category, setCategory] = useState<Category | undefined>(undefined);
+
+  const plausible = usePlausible();
 
   const gameCategory = useMemo(
     () => TODAY_CATEGORIES.find((cat) => cat.id === gameType),
@@ -119,14 +123,22 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
 
   const saveHistory = useCallback(
     ({ answer, status }: { answer: string; status: SimilarityStatusType }) => {
+      const isCorrect = status === similarityStatus.CORRECT;
+      const isCompleted = status === similarityStatus.CORRECT || currentStep === 4;
       saveTodayHistory(todayGame?._id ?? '', {
         type: gameType,
         attempts: [...answers, answer],
-        isCompleted: status === similarityStatus.CORRECT || currentStep === 4,
-        isCorrect: status === similarityStatus.CORRECT,
+        isCompleted,
+        isCorrect,
       });
+
+      if (isCompleted) {
+        plausible(`todayCompleted_${gameType}`, {
+          props: { attemps: currentStep + 1, isCorrect },
+        });
+      }
     },
-    [answers, currentStep, todayGame?._id, gameType],
+    [todayGame?._id, gameType, answers, currentStep, plausible],
   );
 
   const checkAnswer = useCallback(

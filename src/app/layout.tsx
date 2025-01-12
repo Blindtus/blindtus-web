@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter as FontSans } from 'next/font/google';
+import { cookies } from 'next/headers';
 
+import PlausibleProvider from 'next-plausible';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { Toaster } from '@/components/ui/toaster';
@@ -15,42 +17,61 @@ const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
 });
+// };
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://blindtus.com'),
-  title: {
-    template: '%s | Blindtus',
-    default: 'Blindtus - Daily music quiz',
-  },
-  description:
-    'Quiz site for movie and TV show lovers! Every day, try to guess the music in different categories: Film, TV Series, Cartoon, Video Games! Also, try other categories: pixelated posters, movies featuring specific actors, or even guess the release date.',
-  icons: {
-    icon: '/favicon.ico',
-  },
-  openGraph: {
-    title: 'Blindtus - Daily music quiz',
-    description:
-      'Quiz site for movie and TV show lovers! Every day, try to guess the music in different categories: Film, TV Series, Cartoon, Video Games! Also, try other categories: pixelated posters, movies featuring specific actors, or even guess the release date.',
-    url: 'https://blindtus.com',
-    siteName: 'Blindtus',
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = cookies();
+  const locale: 'fr' | 'en' = ((await cookieStore).get('locale')?.value as 'fr' | 'en') || 'en';
 
-    images: [
-      {
-        url: 'https://blindtus.com/cover.png',
-        width: 800,
-        height: 382,
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@blindtus',
-    creator: '@cl3tus_',
-    images: 'https://blindtus.com/cover.png',
-  },
-};
+  const translations = {
+    en: {
+      title: 'Blindtus - The Ultimate Movie and TV Show Guessing Game',
+      description:
+        'Challenge your knowledge of cinema and TV with Blindtus. Guess movies and TV shows by music, posters, or actors in our fun and interactive game modes: Blindtus, Pixelus, and Castus!',
+    },
+    fr: {
+      title: 'Blindtus - Le Jeu Ultime pour Deviner des Films et Séries',
+      description:
+        'Mettez à l’épreuve vos connaissances en cinéma et séries avec Blindtus. Devinez des films et séries grâce à la musique, aux affiches ou aux acteurs dans nos modes de jeu amusants et interactifs : Blindtus, Pixelus et Castus !',
+    },
+  };
+
+  const { title, description } = translations[locale] || translations['en'];
+
+  return {
+    metadataBase: new URL('https://blindtus.com'),
+    title: {
+      template: '%s | Blindtus',
+      default: title,
+    },
+    description,
+    icons: {
+      icon: '/favicon.ico',
+    },
+    openGraph: {
+      title: 'Blindtus - Daily music quiz',
+      description: description,
+      url: 'https://blindtus.com',
+      siteName: 'Blindtus',
+
+      images: [
+        {
+          url: 'https://blindtus.com/cover.png',
+          width: 800,
+          height: 382,
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@blindtus',
+      creator: '@cl3tus_',
+      images: 'https://blindtus.com/cover.png',
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -68,16 +89,22 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={fontSans.variable}>
-        <NuqsAdapter>
-          <QueryProvider>
-            <AuthProvider>
-              <I18nProvider>
-                {children}
-                <Toaster />
-              </I18nProvider>
-            </AuthProvider>
-          </QueryProvider>
-        </NuqsAdapter>
+        <PlausibleProvider
+          domain="blindtus.com"
+          customDomain="https://plausible.cl3tus.com"
+          selfHosted
+        >
+          <NuqsAdapter>
+            <QueryProvider>
+              <AuthProvider>
+                <I18nProvider>
+                  {children}
+                  <Toaster />
+                </I18nProvider>
+              </AuthProvider>
+            </QueryProvider>
+          </NuqsAdapter>
+        </PlausibleProvider>
       </body>
     </html>
   );

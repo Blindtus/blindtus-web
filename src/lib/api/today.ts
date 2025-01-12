@@ -26,6 +26,10 @@ export const getToday = async () => {
       endpoint: `/today/today`,
     });
 
+    if (response.error) {
+      return null;
+    }
+
     return response.data;
   } catch (error) {
     console.error('Failed to fetch today', error);
