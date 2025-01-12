@@ -6,7 +6,7 @@ module.exports = {
     {
       name: 'Blindtus_WEB',
       script: 'npm',
-      cwd: `${path_apps}/admin`,
+      cwd: `${path_apps}/web`,
       args: 'run start',
       env_production: {
         PORT: 3400,
