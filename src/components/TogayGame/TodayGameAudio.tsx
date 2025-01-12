@@ -26,6 +26,7 @@ const INTERVAL_PROGRESS = 100;
 
 const TodayGameAudio = () => {
   const __ = useTranslations();
+  const [startLoading, setStartLoading] = useState(false);
   const [answerSent, setAnswerSent] = useState<boolean | null>(null);
   const [status, setStatus] = useState<SimilarityStatusType | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
@@ -81,6 +82,7 @@ const TodayGameAudio = () => {
   const handleLoadMusic = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.load();
+      setStartLoading(true);
     }
   }, []);
 
@@ -166,7 +168,11 @@ const TodayGameAudio = () => {
       <Button
         size="lg"
         onClick={isMobileDevice() && !isAudioLoaded ? handleLoadMusic : handlePlaySong}
-        disabled={!music || !isAudioLoaded}
+        disabled={
+          !music ||
+          (!isMobileDevice() && !isAudioLoaded) ||
+          (isMobileDevice() && startLoading && !isAudioLoaded)
+        }
         className="w-full sm:w-auto"
       >
         {isMobileDevice() && !isAudioLoaded ? (
@@ -180,7 +186,7 @@ const TodayGameAudio = () => {
         )}
       </Button>
     );
-  }, [__, handleLoadMusic, handlePlaySong, isAudioLoaded, music]);
+  }, [__, handleLoadMusic, handlePlaySong, isAudioLoaded, music, startLoading]);
 
   return (
     <div className="flex flex-col gap-4">
