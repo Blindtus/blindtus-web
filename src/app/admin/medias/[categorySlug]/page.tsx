@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { useAdminCategoryType } from '@/context/AdminCategoryContext';
 import { useGetCategoryBySlug } from '@/lib/react-query/CategoryQueries';
 import { useGetAllMedias } from '@/lib/react-query/MediaQueries';
+import { stringToBoolean } from '@/utils/stringUtils';
 
 const MediasPage = () => {
   const { categorySlug } = useParams<{ categorySlug: string }>();
@@ -28,11 +29,15 @@ const MediasPage = () => {
   const [filter, setFilter] = useQueryStates({
     title: parseAsString.withDefault(''),
     status: parseAsString.withDefault(''),
+    verified: parseAsString.withDefault('undefined'),
     year: parseAsString.withDefault(''),
     yearOperator: parseAsString.withDefault('$eq'),
     audiosCount: parseAsString.withDefault(''),
     audiosCountOperator: parseAsString.withDefault('$eq'),
+    postersCount: parseAsString.withDefault(''),
+    postersCountOperator: parseAsString.withDefault('$eq'),
   });
+
   const [pagination, setPagination] = useQueryStates(
     {
       pageIndex: parseAsFloat.withDefault(1),
@@ -42,6 +47,7 @@ const MediasPage = () => {
       history: 'push',
     },
   );
+
   const { data: categoryData, isFetching: isFetchingMediaType } =
     useGetCategoryBySlug(categorySlug);
 
@@ -51,6 +57,7 @@ const MediasPage = () => {
     limit: pagination.pageSize,
     filter: {
       ...filter,
+      verified: stringToBoolean(filter.verified),
       year: {
         operator: filter.yearOperator,
         value: Number(filter.year) || undefined,
@@ -58,6 +65,10 @@ const MediasPage = () => {
       audiosCount: {
         operator: filter.audiosCountOperator,
         value: filter.audiosCount ? Number(filter.audiosCount) : undefined,
+      },
+      postersCount: {
+        operator: filter.postersCountOperator,
+        value: filter.postersCount ? Number(filter.postersCount) : undefined,
       },
     },
   });
@@ -124,6 +135,13 @@ const MediasPage = () => {
           </Button>
         ) : null}
 
+        {stringToBoolean(filter.verified) !== undefined ? (
+          <Button variant="outline" onClick={() => setFilter({ verified: 'undefined' })}>
+            {stringToBoolean(filter.verified) ? 'Verified' : 'Not verified'}{' '}
+            <span className="text-accent-foreground">x</span>
+          </Button>
+        ) : null}
+
         {filter.audiosCount !== '' ? (
           <Button
             variant="outline"
@@ -133,13 +151,26 @@ const MediasPage = () => {
             <span className="text-accent-foreground">x</span>
           </Button>
         ) : null}
+
+        {filter.postersCount !== '' ? (
+          <Button
+            variant="outline"
+            onClick={() => setFilter({ postersCount: '', postersCountOperator: '$eq' })}
+          >
+            {filter.postersCount} - {filter.postersCountOperator}{' '}
+            <span className="text-accent-foreground">x</span>
+          </Button>
+        ) : null}
+
         <FilterDropdown
           onApply={handleApplyFilter}
           label="Add filter"
           items={[
             { label: 'Title', value: 'title', type: 'text' },
+            { label: 'Verified', value: 'verified', type: 'boolean' },
             { label: 'Year', value: 'year', type: 'number' },
             { label: 'Nbr audios', value: 'audiosCount', type: 'number' },
+            { label: 'Nbr posters', value: 'postersCount', type: 'number' },
           ]}
         />
       </div>

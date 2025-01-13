@@ -16,11 +16,16 @@ export const getAllMedias = async ({
   filter?: {
     title?: string;
     status?: string;
+    verified?: boolean;
     year?: {
       operator: string;
       value?: number;
     };
     audiosCount?: {
+      operator: string;
+      value?: number;
+    };
+    postersCount?: {
       operator: string;
       value?: number;
     };

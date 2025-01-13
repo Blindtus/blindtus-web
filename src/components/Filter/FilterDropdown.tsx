@@ -35,7 +35,7 @@ const OPERATORS = [
 export type Item = {
   label: string;
   value: string;
-  type: 'text' | 'number';
+  type: 'text' | 'number' | 'boolean';
 };
 
 type Props = {
@@ -107,13 +107,32 @@ const FilterDropdown = ({ className = '', label = 'Open', items = [], onApply }:
                 ))}
               </RadioGroup>
             ) : null}
-            <input
-              type={selectedItem.type}
-              className={cn('input', 'w-full')}
-              placeholder={selectedItem.label}
-              name="value"
-              autoFocus
-            />
+            {selectedItem.type === 'boolean' ? (
+              <RadioGroup defaultValue="true" name="value">
+                <div className="flex cursor-pointer items-center space-x-2">
+                  <RadioGroupItem id="true" value="true" />
+                  <label htmlFor="true" className="cursor-pointer text-sm">
+                    True
+                  </label>
+                </div>
+                <div className="flex cursor-pointer items-center space-x-2">
+                  <RadioGroupItem id="false" value="false" />
+                  <label htmlFor="false" className="cursor-pointer text-sm">
+                    False
+                  </label>
+                </div>
+              </RadioGroup>
+            ) : null}
+
+            {selectedItem.type !== 'boolean' ? (
+              <input
+                type={selectedItem.type}
+                className={cn('input', 'w-full')}
+                placeholder={selectedItem.label}
+                name="value"
+                autoFocus
+              />
+            ) : null}
             <Button variant="primary" type="submit">
               Apply
             </Button>

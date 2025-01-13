@@ -10,3 +10,9 @@ export const normalize = (str: string): string => {
 export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const stringToBoolean = (str: string): boolean | undefined => {
+  if (str === 'true') return true;
+  if (str === 'false') return false;
+  return undefined;
+};

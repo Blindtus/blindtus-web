@@ -7,6 +7,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/context/AuthContext';
+import { HistoryProvider } from '@/context/RouterContext';
 import { getUserLocale } from '@/i18n/locale';
 import { QueryProvider } from '@/lib/react-query/QueryProvider';
 
@@ -94,16 +95,18 @@ export default async function RootLayout({
           customDomain="https://plausible.cl3tus.com"
           selfHosted
         >
-          <NuqsAdapter>
-            <QueryProvider>
-              <AuthProvider>
-                <I18nProvider>
-                  {children}
-                  <Toaster />
-                </I18nProvider>
-              </AuthProvider>
-            </QueryProvider>
-          </NuqsAdapter>
+          <HistoryProvider>
+            <NuqsAdapter>
+              <QueryProvider>
+                <AuthProvider>
+                  <I18nProvider>
+                    {children}
+                    <Toaster />
+                  </I18nProvider>
+                </AuthProvider>
+              </QueryProvider>
+            </NuqsAdapter>
+          </HistoryProvider>
         </PlausibleProvider>
       </body>
     </html>

@@ -28,11 +28,16 @@ export const useGetAllMedias = ({
   filter?: {
     title?: string;
     status?: string;
+    verified?: boolean;
     year?: {
       operator: string;
       value?: number;
     };
     audiosCount?: {
+      operator: string;
+      value?: number;
+    };
+    postersCount?: {
       operator: string;
       value?: number;
     };
@@ -93,7 +98,7 @@ export const useUpdateMedia = () => {
         ...response.data,
       });
     },
-    () => [QUERY_KEYS.MEDIAS_ALL],
+    () => [],
   );
 };
 

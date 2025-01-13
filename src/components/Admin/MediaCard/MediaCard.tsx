@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useDeleteMedia } from '@/lib/react-query/MediaQueries';
+import { useDeleteMedia, useUpdateMedia } from '@/lib/react-query/MediaQueries';
 import type { Media } from '@/types/media.type';
 
 type MediaCardProps = {
@@ -26,6 +26,7 @@ type MediaCardProps = {
 };
 
 const MediaCard = ({ media, category }: MediaCardProps) => {
+  const { mutateAsync: updateMedia } = useUpdateMedia();
   const { mutateAsync: removeMedia, isPending: isLoadingRemoveMedia } = useDeleteMedia();
 
   const mediaSlug = useMemo(
@@ -36,6 +37,29 @@ const MediaCard = ({ media, category }: MediaCardProps) => {
   const url = useMemo(
     () => `/admin/medias/${category.slug}/${mediaSlug}/${media._id}`,
     [category.slug, media._id, mediaSlug],
+  );
+
+  const handleToggleVerified = useCallback(
+    (event: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+      try {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!media) {
+          return;
+        }
+
+        updateMedia({
+          mediaId: media._id,
+          media: {
+            verified: !media.verified,
+          },
+        });
+      } catch (error) {
+        console.error('Failed to update media', error);
+      }
+    },
+    [media, updateMedia],
   );
 
   const handleDelete = useCallback(async () => {
@@ -71,6 +95,16 @@ const MediaCard = ({ media, category }: MediaCardProps) => {
                 Pixelated: {media.pixelatedImagesCount}
               </Badge>
             </div>
+            <div className="mt-4">
+              <Button
+                variant={media?.verified ? 'success' : 'destructive'}
+                size="sm"
+                className="mt-4"
+                onClick={handleToggleVerified}
+              >
+                {media.verified ? 'Verified' : 'Not verified'}
+              </Button>
+            </div>
           </div>
         </div>
       </Link>
@@ -86,6 +120,9 @@ const MediaCard = ({ media, category }: MediaCardProps) => {
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href={url}>Edit</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleToggleVerified}>
+              {media.verified ? 'Verified' : 'Not verified'}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" onClick={handleDelete}>

@@ -17,7 +17,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useCrawlMedia, useGetMedia } from '@/lib/react-query/MediaQueries';
+import {
+  useCrawlMedia,
+  useDeleteMedia,
+  useGetMedia,
+  useUpdateMedia,
+} from '@/lib/react-query/MediaQueries';
 import { formatDateFr } from '@/utils/date';
 
 import MediaDetailAudios from './MediaDetailAudios';
@@ -34,6 +39,8 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
   const queryTab = searchParams.get('tab') || 'content';
 
   const { data: media, isFetching: isMediaFetching } = useGetMedia(mediaId);
+  const { mutate: updateMedia } = useUpdateMedia();
+  const { mutateAsync: removeMedia, isPending: isLoadingRemoveMedia } = useDeleteMedia();
   const { mutate: crawlMedia, isPending: isCrawlPending } = useCrawlMedia();
 
   const isLoading = useMemo(() => isMediaFetching, [isMediaFetching]);
@@ -54,6 +61,39 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
     },
     [crawlMedia, mediaId],
   );
+
+  const handleToggleVerified = useCallback(() => {
+    try {
+      if (!media) {
+        return;
+      }
+
+      updateMedia({
+        mediaId,
+        media: {
+          verified: !media.verified,
+        },
+      });
+    } catch (error) {
+      console.error('Failed to update media', error);
+    }
+  }, [media, mediaId, updateMedia]);
+
+  const handleDelete = useCallback(async () => {
+    try {
+      await removeMedia(mediaId);
+
+      // check if the previous page is the /admin/medias page
+      // if (router.pathname === '/admin/medias') {
+      //   router.reload();
+      //   return;
+      // }
+
+      router.push('/admin/medias');
+    } catch (error) {
+      console.error('Error while deleting media', error);
+    }
+  }, [mediaId, removeMedia, router]);
 
   if (isLoading) {
     return <Loader />;
@@ -82,6 +122,14 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
             <div>
               <h1 className="page-title--sm">{media.title.fr}</h1>
               <h2 className="font-xl">{media.title.en}</h2>
+              <Button
+                variant={media?.verified ? 'success' : 'destructive'}
+                size="sm"
+                className="mt-4"
+                onClick={handleToggleVerified}
+              >
+                {media.verified ? 'Verified' : 'Not verified'}
+              </Button>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -101,7 +149,9 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
                   {isCrawlPending ? <Loader /> : 'Update datas'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">Delete</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={handleDelete}>
+                  {isLoadingRemoveMedia ? <Loader /> : 'Delete'}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
