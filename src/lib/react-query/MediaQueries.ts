@@ -10,6 +10,7 @@ import {
   deleteMedia,
   getAllMedias,
   getMediaById,
+  getMediaIds,
   getMediaMusics,
   getMediaPixelatedImages,
   updateMedia,
@@ -61,6 +62,10 @@ export const useGetAllMedias = ({
   );
 };
 
+export const useGetAllMediaIds = () => {
+  return useGenericQuery([QUERY_KEYS.MEDIAS_ALL_IDS], () => getMediaIds());
+};
+
 export const useGetMedia = (mediaId: string) => {
   return useGenericQuery([QUERY_KEYS.MEDIAS_BY_ID, mediaId], () => getMediaById(mediaId));
 };
@@ -75,7 +80,7 @@ export const useAddMedia = () => {
   >(
     ({ mediaId, categoryId }) => addMedia(mediaId, categoryId),
     () => {},
-    () => [QUERY_KEYS.MEDIAS_ALL],
+    () => [QUERY_KEYS.MEDIAS_ALL_IDS, QUERY_KEYS.MEDIAS_ALL],
   );
 };
 
@@ -92,6 +97,39 @@ export const useUpdateMedia = () => {
     ({ mediaId, media }) => updateMedia(mediaId, media),
     (response, { mediaId }) => {
       const originalData = queryClient.getQueryData<Media>([QUERY_KEYS.MEDIAS_BY_ID, mediaId]);
+      // get all medias with query key that contain `MEDIAS_ALL`
+      const mediasDatas = queryClient.getQueriesData<QueryResponse<Media[]>>({
+        queryKey: [QUERY_KEYS.MEDIAS_ALL],
+      });
+
+      mediasDatas.forEach((mediasData) => {
+        if (!mediasData) {
+          return;
+        }
+
+        const datas = mediasData[1]?.data || [];
+
+        if (!datas) {
+          return;
+        }
+
+        // update the media in the list
+        const updatedMedias = datas.map((data) => {
+          if (data._id === mediaId) {
+            return {
+              ...data,
+              ...response.data,
+            };
+          }
+
+          return data;
+        });
+
+        queryClient.setQueryData(mediasData[0], {
+          ...mediasData[1],
+          data: updatedMedias,
+        });
+      });
 
       queryClient.setQueryData([QUERY_KEYS.MEDIAS_BY_ID, mediaId], {
         ...originalData,
@@ -106,7 +144,7 @@ export const useDeleteMedia = () => {
   return useGenericMutation<string, QueryResponse<Media>>(
     deleteMedia,
     () => {},
-    () => [QUERY_KEYS.MEDIAS_ALL],
+    () => [QUERY_KEYS.MEDIAS_ALL, QUERY_KEYS.MEDIAS_ALL_IDS],
   );
 };
 

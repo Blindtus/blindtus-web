@@ -51,6 +51,20 @@ export const getAllMedias = async ({
   }
 };
 
+export const getMediaIds = async () => {
+  try {
+    const response: QueryResponse<Media[]> = await callApi({
+      endpoint: '/media/ids',
+      method: 'GET',
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch media ids', error);
+    return null;
+  }
+};
+
 export const getMediaById = async (mediaId: string) => {
   try {
     const response: QueryResponse<Media> = await callApi({
@@ -68,7 +82,7 @@ export const getMediaById = async (mediaId: string) => {
 export const addMedia = async (tmdbId: string, categoryId: string) => {
   try {
     const response: QueryResponse<Media> = await callApi({
-      endpoint: '/media',
+      endpoint: '/admin/media',
       method: 'POST',
       data: {
         mediaId: tmdbId,

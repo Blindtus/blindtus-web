@@ -6,9 +6,13 @@ export const QUERY_KEYS = {
 
   // Medias
   MEDIAS_ALL: 'mediasAll',
+  MEDIAS_ALL_IDS: 'mediasAllIds',
   MEDIAS_BY_ID: 'mediasById',
   MEDIAS_MUSICS: 'mediasMusics',
   MEDIAS_PIXELATED_IMAGES: 'mediasPixelatedImages',
+
+  // TMDB
+  TMDB_SEARCH: 'tmdbSearch',
 
   // Musics
   MUSICS_ALL: 'musicsAll',
