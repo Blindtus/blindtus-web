@@ -97,7 +97,14 @@ export const useUpdateMedia = () => {
     ({ mediaId, media }) => updateMedia(mediaId, media),
     (response, { mediaId }) => {
       const originalData = queryClient.getQueryData<Media>([QUERY_KEYS.MEDIAS_BY_ID, mediaId]);
-      // get all medias with query key that contain `MEDIAS_ALL`
+
+      if (originalData) {
+        queryClient.setQueryData([QUERY_KEYS.MEDIAS_BY_ID, mediaId], {
+          ...originalData,
+          ...response.data,
+        });
+      }
+
       const mediasDatas = queryClient.getQueriesData<QueryResponse<Media[]>>({
         queryKey: [QUERY_KEYS.MEDIAS_ALL],
       });
@@ -129,11 +136,6 @@ export const useUpdateMedia = () => {
           ...mediasData[1],
           data: updatedMedias,
         });
-      });
-
-      queryClient.setQueryData([QUERY_KEYS.MEDIAS_BY_ID, mediaId], {
-        ...originalData,
-        ...response.data,
       });
     },
     () => [],

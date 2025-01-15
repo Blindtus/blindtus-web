@@ -52,6 +52,10 @@ const translations = {
     null,
     "Play song"
   ],
+  "!noun:privacy": [
+    null,
+    "Privacy policy"
+  ],
   "!noun:returning-serie": [
     null,
     "Ongoing"
@@ -75,6 +79,10 @@ const translations = {
   "!noun:skip": [
     null,
     "Skip"
+  ],
+  "!noun:terms": [
+    null,
+    "Terms of Use"
   ],
   "!noun:tv": [
     null,

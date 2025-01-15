@@ -87,6 +87,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getUserLocale();
+
   return (
     <html lang={locale}>
       <body className={fontSans.variable}>
