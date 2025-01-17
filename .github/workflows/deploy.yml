@@ -7,7 +7,7 @@ on:
 jobs:
   bump-version:
     name: 'Bump Version on master'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
 
@@ -37,6 +37,8 @@ jobs:
     name: Deploy
     runs-on: self-hosted
     needs: [bump-version]
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout source code
@@ -58,7 +60,7 @@ jobs:
 
   notification:
     name: Notif
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: ${{ always() }}
     needs: [bump-version, deploy]
 
