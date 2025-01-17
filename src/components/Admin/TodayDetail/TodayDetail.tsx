@@ -54,6 +54,7 @@ const TodayDetail = ({ todayId }: TodayDetailProps) => {
         />
         <TodayDetailItem todayId={todayId} todayItem={today.pixelus} category="pixelus" />
         <TodayDetailItem todayId={todayId} todayItem={today.castus} category="castus" />
+        <TodayDetailItem todayId={todayId} todayItem={today.hotDate} category="hotDate" />
       </div>
     </div>
   );
@@ -61,7 +62,7 @@ const TodayDetail = ({ todayId }: TodayDetailProps) => {
 
 type TodayDetailItemProps = {
   todayId: string;
-  todayItem: Music | PixelatedImage | Media;
+  todayItem?: Music | PixelatedImage | Media;
   type?: string;
   category: GameType;
 };
@@ -79,7 +80,7 @@ const TodayDetailItem = ({ todayId, todayItem, category }: TodayDetailItemProps)
   }, [category, generateNewTodayItem, todayId]);
 
   const media = useMemo(() => {
-    if ('media' in todayItem) {
+    if (todayItem && 'media' in todayItem) {
       return todayItem.media;
     }
     return todayItem;
@@ -101,7 +102,7 @@ const TodayDetailItem = ({ todayId, todayItem, category }: TodayDetailItemProps)
             <AccordionContent>
               <div className="flex flex-col gap-4">
                 <h3>{media.title.fr}</h3>
-                {'audioPath' in todayItem ? (
+                {todayItem && 'audioPath' in todayItem ? (
                   <AudioPlayer src={todayItem.audioPath || ''} />
                 ) : (
                   <div>{todayId}</div>

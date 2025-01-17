@@ -79,6 +79,18 @@ export const columns: ColumnDef<Today>[] = [
     },
   },
   {
+    accessorKey: 'hotDate',
+    header: 'Hot Date',
+    cell: ({ row }) => {
+      const hotDate: Media = row.getValue('hotDate');
+      return (
+        <Badge variant={hotDate ? 'default' : 'destructive'}>
+          {hotDate ? 'OK' : 'Not created'}
+        </Badge>
+      );
+    },
+  },
+  {
     id: 'actions',
     cell: ({ row }) => {
       return <ActionCell row={row} />;

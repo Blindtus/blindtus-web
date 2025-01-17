@@ -15,8 +15,8 @@ module.exports = {
       },
 
       // Logging
-      out_file: `${path_logs}/Blindtus_ADMIN_out.log`,
-      error_file: `${path_logs}/Blindtus_ADMIN_error.log`,
+      out_file: `${path_logs}/Blindtus_WEB_out.log`,
+      error_file: `${path_logs}/Blindtus_WEB_error.log`,
       merge_logs: false,
       log_date_format: 'DD-MM HH:mm:ss Z',
       log_type: 'json',

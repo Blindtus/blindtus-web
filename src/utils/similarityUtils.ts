@@ -58,3 +58,31 @@ export const checkSimilarity = (
 
   return similarityStatus.WRONG;
 };
+
+export const temperatureTypes = Object.freeze({
+  HOT: 'hot',
+  WARM: 'warm',
+  COLD: 'cold',
+  CORRECT: 'correct',
+});
+
+type TemperatureType = (typeof temperatureTypes)[keyof typeof temperatureTypes];
+
+const TEMP_HOT = 2;
+const TEMP_WARM = 6;
+
+export const evaluateNumber = (value: number, reference: number): TemperatureType => {
+  if (value === reference) {
+    return temperatureTypes.CORRECT;
+  }
+
+  const difference = Math.abs(value - reference);
+
+  if (difference <= TEMP_HOT) {
+    return temperatureTypes.HOT;
+  } else if (difference <= TEMP_WARM) {
+    return temperatureTypes.WARM;
+  } else {
+    return temperatureTypes.COLD;
+  }
+};

@@ -62,6 +62,18 @@ export async function generateMetadata({ params }: TodayPageProps): Promise<Meta
           'Pouvez-vous deviner le film ou la série à partir de ses acteurs ? Testez vos connaissances sur les stars hollywoodiennes et les castings emblématiques dans Castus, un jeu amusant et stimulant !',
       },
     },
+    hotDate: {
+      en: {
+        title: 'Hot Date - Guess the Release Date of a Movie',
+        description:
+          'Do you know when your favorite movies were released? In Hot Date, guess the release date of a movie and see how close you are to the correct answer. The closer you get, the hotter the date!',
+      },
+      fr: {
+        title: 'Hot Date - Devinez la Date de Sortie d’un Film',
+        description:
+          'Savez-vous quand vos films préférés sont sortis ? Dans Hot Date, devinez la date de sortie d’un film et voyez à quel point vous êtes proche de la bonne réponse. Plus vous vous rapprochez, plus la date est chaude !',
+      },
+    },
   };
 
   const { title, description } =

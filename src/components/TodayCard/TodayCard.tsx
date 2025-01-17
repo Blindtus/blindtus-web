@@ -23,6 +23,7 @@ const cardVariants = cva('select-none rounded-sm text-white', {
       blindtus: 'bg-gradient-to-b from-category-tvShow to-primary-special',
       pixelus: 'bg-gradient-to-b from-category-pixelus to-primary-special',
       castus: 'bg-gradient-to-b from-category-castus to-primary-special',
+      hotDate: 'bg-gradient-to-b from-category-hotDate to-primary-special',
     },
   },
 });

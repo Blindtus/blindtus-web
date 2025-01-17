@@ -23,7 +23,9 @@ import { getTodayHistoryByTodayId, saveTodayHistory } from '@/utils/historyUtils
 import {
   type SimilarityStatusType,
   checkSimilarity,
+  evaluateNumber,
   similarityStatus,
+  temperatureTypes,
 } from '@/utils/similarityUtils';
 
 type TodayGameContextType = {
@@ -95,7 +97,9 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
   useEffect(() => {
     if (todayGame) {
       const media: Media =
-        'media' in todayGame[gameType] ? (todayGame[gameType].media as Media) : todayGame[gameType];
+        todayGame && 'media' in (todayGame?.[gameType] ?? {})
+          ? (todayGame?.[gameType] as { media: Media }).media
+          : (todayGame[gameType] as Media);
 
       setMedia(media);
 
@@ -162,6 +166,27 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
       return status;
     },
     [currentStep, media?.simpleTitles, saveHistory, titles.en, titles.fr],
+  );
+
+  const checkReleaseDate = useCallback(
+    (answer: string) => {
+      const correctAnswer = media?.releaseDate ?? '';
+      const status = evaluateNumber(Number(answer), Number(correctAnswer));
+
+      const statusCorrect = status === temperatureTypes.CORRECT;
+
+      setIsCorrect(statusCorrect);
+      setIsCompleted(statusCorrect);
+
+      if (!statusCorrect && currentStep <= 4) {
+        setCurrentStep((prev) => prev + 1);
+      }
+
+      saveHistory({ answer });
+
+      return status;
+    },
+    [currentStep, media?.releaseDate, saveHistory],
   );
 
   const value = useMemo(
