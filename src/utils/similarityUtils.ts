@@ -13,7 +13,7 @@ export type SimilarityStatusKeysType = keyof typeof similarityStatus;
 export type SimilarityStatusType = (typeof similarityStatus)[keyof typeof similarityStatus];
 
 const SCORE_CORRECT = 0.85;
-const SCORE_ALMOST = 0.75;
+const SCORE_ALMOST = 0.7;
 
 const lcs = stringComparison.lcs;
 
