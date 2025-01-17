@@ -46,19 +46,15 @@ jobs:
         id: deployment
         working-directory: /home/website/www/blindtus-apps/web
         run: |
-          git reset --hard
-          git pull origin main
-          npm ci
-          npm run lint
-          npm run build
-          pm2 startOrRestart ./scripts/pm2.config.js
-        env:
-          ERROR_MESSAGE: ''
+          {
+            git reset --hard &&
+            git pull origin main &&
+            npm ci &&
+            npm run lint &&
+            npm run build &&
+            pm2 startOrRestart ./scripts/pm2.config.js
+          } || echo "error_message=Deployment failed during execution." >> $GITHUB_ENV
         continue-on-error: true
-
-      - name: Capture Error Message
-        if: failure()
-        run: echo "error_message=${{ failure() }}" >> $GITHUB_ENV
 
   notification:
     name: Notif
@@ -69,7 +65,7 @@ jobs:
     steps:
       - name: Notify Discord on Failure
         uses: sarisia/actions-status-discord@v1
-        if: ${{ contains(needs.deploy.result, 'failure') }}
+        if: ${{ needs.deploy.result == 'failure' }}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           noprefix: true
@@ -77,13 +73,13 @@ jobs:
           description: |
             Build and deploy to blindtus.com failed.
             **Error Message:**
-            ${{ env.ERROR_MESSAGE }}
+            ${{ env.error_message }}
           color: 0xC14F4F
           username: GitHub Notif
 
       - name: Notify Discord on Success
         uses: sarisia/actions-status-discord@v1
-        if: ${{ contains(needs.deploy.result, 'success') }}
+        if: ${{ needs.deploy.result == 'success' }}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           noprefix: true
