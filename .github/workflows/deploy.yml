@@ -32,11 +32,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Display updated package.json'
-        run: cat ./package.json
-
-      - name: 'Output Step'
-        run: echo "New tag: ${{ steps.version-bump.outputs.newTag }}"
+      - name: 'Output New Tag'
+        run: |
+          echo "New tag: ${{ steps.version-bump.outputs.newTag }}"
 
   deploy:
     name: Deploy
@@ -87,6 +85,6 @@ jobs:
           noprefix: true
           title: 'Success: Deploy to Prod'
           description: |
-            Build and deploy to blindtus.com - ${{ needs["bump-version"].outputs.newTag }}
+            Build and deploy to blindtus.com - ${{ needs.bump-version.outputs.newTag }}
           color: 0x03bafc
           username: GitHub Notif
