@@ -44,7 +44,7 @@ jobs:
 
       - name: Sync Code to Deployment Directory
         run: |
-          rsync -avz --delete \
+          rsync -avz --delete --exclude=".env" \
           /home/github/actions-runner/_work/blindtus-web/blindtus-web/ \
           /home/website/www/blindtus-apps/web
 
