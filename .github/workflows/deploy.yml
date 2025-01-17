@@ -1,0 +1,91 @@
+name: Deploy to prod
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  bump-version:
+    name: 'Bump Version on master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 'Checkout source code'
+        uses: 'actions/checkout@v2'
+        with:
+          ref: ${{ github.ref }}
+          persist-credentials: false
+      - name: 'Display package.json'
+        run: cat ./package.json
+      - name: 'Automated Version Bump'
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          tag-prefix: 'v'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Display updated package.json'
+        run: cat ./package.json
+      - name: 'Output new version'
+        run: echo "New tag: ${{ steps.version-bump.outputs.newTag }}"
+
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    needs: [bump-version]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Install, Build, and Restart App
+        id: deployment
+        working-directory: /home/website/www/blindtus-apps/web
+        run: |
+          git reset --hard
+          git pull origin main
+          npm ci
+          npm run lint
+          npm run build
+          pm2 startOrRestart ./scripts/pm2.config.js
+        env:
+          ERROR_MESSAGE: ''
+        continue-on-error: true
+
+      - name: Capture Error Message
+        if: failure()
+        run: echo "error_message=${{ failure() }}" >> $GITHUB_ENV
+
+  notification:
+    name: Notif
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [bump-version, deploy]
+
+    steps:
+      - name: Notify Discord on Failure
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ contains(needs.deploy.result, 'failure') }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          noprefix: true
+          title: 'Failed: Deploy to Prod'
+          description: |
+            Build and deploy to blindtus.com failed.
+            **Error Message:**
+            ${{ env.ERROR_MESSAGE }}
+          color: 0xC14F4F
+          username: GitHub Notif
+
+      - name: Notify Discord on Success
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ contains(needs.deploy.result, 'success') }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          noprefix: true
+          title: 'Success: Deploy to Prod'
+          description: 'Build and deploy to blindtus.com - ${{ needs.bump-version.outputs.newTag }}'
+          color: 0x03bafc
+          username: GitHub Notif
