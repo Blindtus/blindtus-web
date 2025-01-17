@@ -11,6 +11,9 @@ jobs:
     permissions:
       contents: write
 
+    outputs:
+      newTag: ${{ steps.version-bump.outputs.newTag }}
+
     steps:
       - name: 'Checkout source code'
         uses: 'actions/checkout@v2'
@@ -33,9 +36,7 @@ jobs:
         run: cat ./package.json
 
       - name: 'Output Step'
-        env:
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-        run: echo "new tag $NEW_TAG"
+        run: echo "New tag: ${{ steps.version-bump.outputs.newTag }}"
 
   deploy:
     name: Deploy
@@ -85,6 +86,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           noprefix: true
           title: 'Success: Deploy to Prod'
-          description: 'Build and deploy to blindtus.com - ${{ needs.bump-version.outputs.newTag }}'
+          description: |
+            Build and deploy to blindtus.com - ${{ needs["bump-version"].outputs.newTag }}
           color: 0x03bafc
           username: GitHub Notif
