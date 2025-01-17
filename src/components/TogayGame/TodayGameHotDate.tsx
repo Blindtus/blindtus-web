@@ -12,15 +12,15 @@ import { Input } from '@/components/ui/input';
 import { useTodayGame } from '@/context/TodayGameContext';
 import useViewport from '@/hooks/use-viewport';
 import { TodayGameValidation } from '@/lib/validations/today';
-import { type SimilarityStatusType, similarityStatus } from '@/utils/similarityUtils';
+import { type TemperatureType, temperatureTypes } from '@/utils/similarityUtils';
 
-import TodayGameStatus from './TodayGameStatus';
+import MediaPoster from '../Poster/MediaPoster';
 
 const TodayGameHotDate = () => {
   const __ = useTranslations();
-  const [status, setStatus] = useState<SimilarityStatusType | null>(null);
+  const [status, setStatus] = useState<TemperatureType | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
-  const { checkAnswer } = useTodayGame();
+  const { checkReleaseDate, media } = useTodayGame();
   const { isXs } = useViewport();
 
   const form = useForm<z.infer<typeof TodayGameValidation>>({
@@ -35,8 +35,8 @@ const TodayGameHotDate = () => {
   const onSubmit = useCallback(
     async (data: z.infer<typeof TodayGameValidation>) => {
       try {
-        const answerStatus = checkAnswer?.(data.answer) || similarityStatus.WRONG;
-        const isCorrect = answerStatus === similarityStatus.CORRECT;
+        const answerStatus = checkReleaseDate?.(data.answer) || temperatureTypes.COLD;
+        const isCorrect = answerStatus === temperatureTypes.CORRECT;
         setIsAnswerCorrect(isCorrect);
         setStatus(answerStatus);
         form.reset();
@@ -53,7 +53,7 @@ const TodayGameHotDate = () => {
         console.error(error);
       }
     },
-    [checkAnswer, form],
+    [checkReleaseDate, form],
   );
 
   const buttonLabel = useMemo(
@@ -71,7 +71,7 @@ const TodayGameHotDate = () => {
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormControl>
-                  <Input {...field} isWiggle={isAnswerCorrect === false} />
+                  <Input type="number" min={1900} {...field} isWiggle={isAnswerCorrect === false} />
                 </FormControl>
               </FormItem>
             )}
@@ -83,9 +83,11 @@ const TodayGameHotDate = () => {
         </form>
       </Form>
 
-      {status ? <TodayGameStatus status={status} /> : null}
+      {status ? <div>{status}</div> : null}
 
-      <div className="rounded-lg bg-gray-900/40 p-4"></div>
+      <div className="w-full max-w-full md:w-96">
+        <MediaPoster title="Find the media" posterPath={media?.selectedPoster} size="medium" />
+      </div>
     </div>
   );
 };

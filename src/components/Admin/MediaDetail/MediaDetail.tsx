@@ -83,12 +83,6 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
     try {
       await removeMedia(mediaId);
 
-      // check if the previous page is the /admin/medias page
-      // if (router.pathname === '/admin/medias') {
-      //   router.reload();
-      //   return;
-      // }
-
       router.push('/admin/medias');
     } catch (error) {
       console.error('Error while deleting media', error);

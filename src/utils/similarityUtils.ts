@@ -66,7 +66,7 @@ export const temperatureTypes = Object.freeze({
   CORRECT: 'correct',
 });
 
-type TemperatureType = (typeof temperatureTypes)[keyof typeof temperatureTypes];
+export type TemperatureType = (typeof temperatureTypes)[keyof typeof temperatureTypes];
 
 const TEMP_HOT = 2;
 const TEMP_WARM = 6;
