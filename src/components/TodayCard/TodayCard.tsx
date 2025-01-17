@@ -12,7 +12,7 @@ import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { TODAY_CATEGORIES } from '@/constants/todayCategories';
 import { useGetToday } from '@/lib/react-query/TodayQueries';
 import { cn } from '@/lib/utils';
-import type { HistoryTodayDatas } from '@/types/today.type';
+import { GameTypes, type HistoryTodayDatas } from '@/types/today.type';
 import { getTodayHistoryByTodayId } from '@/utils/historyUtils';
 
 import Loader from '../Loader/Loader';
@@ -44,6 +44,19 @@ const TodayCard = ({ className = '', category }: TodayCardProps) => {
       refetch();
     }
   }, [isFetched, isFetching, refetch]);
+
+  const gameType = useMemo(() => {
+    if (!category) {
+      return;
+    }
+
+    return category.game;
+  }, [category]);
+
+  const showMaxAttempts = useMemo(
+    () => category && gameType !== GameTypes.HOT_DATE,
+    [category, gameType],
+  );
 
   const userTodayHistory = useMemo(
     () => getTodayHistoryByTodayId(todayGame?._id || ''),
@@ -102,7 +115,10 @@ const TodayCard = ({ className = '', category }: TodayCardProps) => {
           ) : (
             <>
               {showIcon}
-              <span>{attemptsCount ?? 0}/5</span>
+              <span>
+                {attemptsCount ?? 0}
+                {showMaxAttempts ? '/5' : null}
+              </span>
             </>
           )}
         </div>

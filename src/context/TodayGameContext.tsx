@@ -22,6 +22,7 @@ import type { GameType } from '@/types/today.type';
 import { getTodayHistoryByTodayId, saveTodayHistory } from '@/utils/historyUtils';
 import {
   type SimilarityStatusType,
+  TemperatureType,
   checkSimilarity,
   evaluateNumber,
   similarityStatus,
@@ -40,6 +41,7 @@ type TodayGameContextType = {
   category?: Category;
   gameType?: GameType;
   checkAnswer?: (_answer: string) => SimilarityStatusType;
+  checkReleaseDate?: (_answer: string) => TemperatureType;
 };
 
 export const TodayGameContext = createContext<TodayGameContextType>({
@@ -126,9 +128,21 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
   );
 
   const saveHistory = useCallback(
-    ({ answer, status }: { answer: string; status: SimilarityStatusType }) => {
-      const isCorrect = status === similarityStatus.CORRECT;
-      const isCompleted = status === similarityStatus.CORRECT || currentStep === 4;
+    ({
+      answer,
+      status,
+      temperature,
+    }: {
+      answer: string;
+      status?: SimilarityStatusType;
+      temperature?: TemperatureType;
+    }) => {
+      const isCorrect =
+        status === similarityStatus.CORRECT || temperature === temperatureTypes.CORRECT;
+      const isCompleted =
+        (status && (status === similarityStatus.CORRECT || currentStep === 4)) ||
+        temperature === temperatureTypes.CORRECT;
+
       saveTodayHistory(todayGame?._id ?? '', {
         type: gameType,
         attempts: [...answers, answer],
@@ -168,13 +182,14 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
     [currentStep, media?.simpleTitles, saveHistory, titles.en, titles.fr],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const checkReleaseDate = useCallback(
     (answer: string) => {
-      const correctAnswer = media?.releaseDate ?? '';
-      const status = evaluateNumber(Number(answer), Number(correctAnswer));
+      setAnswers((prev) => [...prev, answer]);
 
-      const statusCorrect = status === temperatureTypes.CORRECT;
+      const correctAnswer = media?.releaseDate ?? '';
+      const temperature = evaluateNumber(Number(answer), Number(correctAnswer));
+
+      const statusCorrect = temperature === temperatureTypes.CORRECT;
 
       setIsCorrect(statusCorrect);
       setIsCompleted(statusCorrect);
@@ -183,11 +198,11 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
         setCurrentStep((prev) => prev + 1);
       }
 
-      // saveHistory({ answer });
+      saveHistory({ answer, temperature });
 
-      return status;
+      return temperature;
     },
-    [currentStep, media?.releaseDate],
+    [currentStep, media?.releaseDate, saveHistory],
   );
 
   const value = useMemo(
@@ -200,6 +215,7 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
       media,
       category,
       checkAnswer,
+      checkReleaseDate,
       music,
       pixelus,
       gameType: gameCategory?.game,
@@ -213,6 +229,7 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
       media,
       category,
       checkAnswer,
+      checkReleaseDate,
       music,
       pixelus,
       gameCategory?.game,

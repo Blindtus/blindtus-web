@@ -24,9 +24,11 @@ import { Button } from '@/components/ui/button';
 import { useTodayGame } from '@/context/TodayGameContext';
 import { cn } from '@/lib/utils';
 import { LocalMediaType } from '@/types/category.type';
+import { GameTypes } from '@/types/today.type';
 import { getTodayNextCategory } from '@/utils/gameUtils';
 import { getCurrentLocale } from '@/utils/i18nUtils';
 
+import ListAnswerTemperature from '../Answer/ListAnswerTemperature';
 import TodayGameAudio from './TodayGameAudio';
 import TodayGameCastus from './TodayGameCastus';
 import TodayGameHotDate from './TodayGameHotDate';
@@ -128,7 +130,11 @@ const TodayGame = () => {
           </div>
 
           <div className="hidden sm:col-span-3 sm:block xl:col-span-2">
-            <ListAnswer answers={answers} isCorrect={isCorrect} />
+            {gameType === GameTypes.HOT_DATE ? (
+              <ListAnswerTemperature answers={answers} refAnswer={media?.releaseDate} />
+            ) : (
+              <ListAnswer answers={answers} isCorrect={isCorrect} />
+            )}
           </div>
         </div>
 
