@@ -28,8 +28,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Display updated package.json'
         run: cat ./package.json
-      - name: 'Output new version'
-        run: echo "New tag: ${{ steps.version-bump.outputs.newTag }}"
+      - name: 'Output Step'
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+        run: echo "new tag $NEW_TAG"
 
   deploy:
     name: Deploy
