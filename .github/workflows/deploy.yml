@@ -7,7 +7,7 @@ on:
 jobs:
   bump-version:
     name: 'Bump Version on master'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
 
@@ -49,16 +49,20 @@ jobs:
           /home/website/www/blindtus-apps/web
 
       - name: Install, Build, and Restart App
+        id: deployment
         working-directory: /home/website/www/blindtus-apps/web
         run: |
-          npm ci
-          npm run lint
-          npm run build
-          pm2 startOrRestart ./scripts/pm2.config.js
+          {
+            npm ci &&
+            npm run lint &&
+            npm run build &&
+            pm2 startOrRestart ./scripts/pm2.config.js
+          } || echo "error_message=Deployment failed during execution." >> $GITHUB_ENV
+        continue-on-error: true
 
   notification:
     name: Notif
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: ${{ always() }}
     needs: [bump-version, deploy]
 
@@ -72,6 +76,7 @@ jobs:
           title: 'Failed: Deploy to Prod'
           description: |
             Build and deploy to blindtus.com failed.
+            **Error Message:** ${{ env.error_message }}
           color: 0xC14F4F
           username: GitHub Notif
 
