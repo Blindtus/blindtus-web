@@ -168,6 +168,7 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
     [currentStep, media?.simpleTitles, saveHistory, titles.en, titles.fr],
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const checkReleaseDate = useCallback(
     (answer: string) => {
       const correctAnswer = media?.releaseDate ?? '';
@@ -182,11 +183,11 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
         setCurrentStep((prev) => prev + 1);
       }
 
-      saveHistory({ answer });
+      // saveHistory({ answer });
 
       return status;
     },
-    [currentStep, media?.releaseDate, saveHistory],
+    [currentStep, media?.releaseDate],
   );
 
   const value = useMemo(

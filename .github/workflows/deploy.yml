@@ -7,7 +7,7 @@ on:
 jobs:
   bump-version:
     name: 'Bump Version on master'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
@@ -17,8 +17,10 @@ jobs:
         with:
           ref: ${{ github.ref }}
           persist-credentials: false
+
       - name: 'Display package.json'
         run: cat ./package.json
+
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
@@ -26,8 +28,10 @@ jobs:
           tag-prefix: 'v'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 'Display updated package.json'
         run: cat ./package.json
+
       - name: 'Output Step'
         env:
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
@@ -35,34 +39,28 @@ jobs:
 
   deploy:
     name: Deploy
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: [bump-version]
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-
-      - name: Sync Code to Deployment Directory
-        run: |
-          rsync -avz --delete --exclude=".env" \
-          /home/github/actions-runner/_work/blindtus-web/blindtus-web/ \
-          /home/website/www/blindtus-apps/web
-
-      - name: Install, Build, and Restart App
-        id: deployment
-        working-directory: /home/website/www/blindtus-apps/web
-        run: |
-          {
-            npm ci &&
-            npm run lint &&
-            npm run build &&
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/website/www/blindtus-apps/web
+            git reset --hard
+            git pull origin main
+            npm ci
+            npm run lint
+            npm run build
             pm2 startOrRestart ./scripts/pm2.config.js
-          } || echo "error_message=Deployment failed during execution." >> $GITHUB_ENV
-        continue-on-error: true
 
   notification:
     name: Notif
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: ${{ always() }}
     needs: [bump-version, deploy]
 
@@ -76,7 +74,7 @@ jobs:
           title: 'Failed: Deploy to Prod'
           description: |
             Build and deploy to blindtus.com failed.
-            **Error Message:** ${{ env.error_message }}
+            **Error Message:** Deployment failed during execution.
           color: 0xC14F4F
           username: GitHub Notif
 
