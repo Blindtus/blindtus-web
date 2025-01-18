@@ -6,7 +6,9 @@ import {
   DragOverlay,
   DragStartEvent,
   UniqueIdentifier,
+  closestCenter,
 } from '@dnd-kit/core';
+import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 
 import { cn } from '@/lib/utils';
@@ -59,7 +61,12 @@ const SortableWrapper = <T,>({ items, keyId, children, onChange }: SortableWrapp
 
   return (
     <>
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+        modifiers={[restrictToParentElement]}
+      >
         <SortableContext items={items.map((item) => item[keyId] as UniqueIdentifier)}>
           {React.Children.map(children, (child) => {
             const childElement = child as React.ReactElement;

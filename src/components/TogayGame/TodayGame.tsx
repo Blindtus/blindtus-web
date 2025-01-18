@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useMemo } from 'react';
 
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ThermometerIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import ListAnswer from '@/components/Answer/ListAnswer';
@@ -27,6 +27,7 @@ import { LocalMediaType } from '@/types/category.type';
 import { GameTypes } from '@/types/today.type';
 import { getTodayNextCategory } from '@/utils/gameUtils';
 import { getCurrentLocale } from '@/utils/i18nUtils';
+import { evaluateNumber } from '@/utils/similarityUtils';
 
 import ListAnswerTemperature from '../Answer/ListAnswerTemperature';
 import TodayGameAudio from './TodayGameAudio';
@@ -98,6 +99,33 @@ const TodayGame = () => {
     return __(`!noun:${category?.type}`);
   }, [__, category]);
 
+  const lastAnswer = useMemo(() => {
+    const answer = answers.findLast((answer) => answer);
+
+    if (gameType === GameTypes.HOT_DATE) {
+      const temperature =
+        answer && media?.releaseDate !== undefined
+          ? evaluateNumber(media.releaseDate, Number(answer))
+          : 'cold';
+      return (
+        <div className="flex items-center gap-2">
+          <ThermometerIcon
+            className={cn('h-10 w-6', {
+              'text-blue-500': temperature === 'cold',
+              'text-yellow-500': temperature === 'warm',
+              'text-red-500': temperature === 'hot',
+              'text-green-500': temperature === 'correct',
+            })}
+          />
+
+          <span className="flex-1 truncate">{answer}</span>
+        </div>
+      );
+    }
+
+    return answer;
+  }, [answers, gameType, media?.releaseDate]);
+
   return (
     <div className="pb-12">
       {renderMediaType ? (
@@ -151,9 +179,7 @@ const TodayGame = () => {
                 <div className="text-sm">
                   {answers.length === 0 ? __('!text:no-try') : __('!text:last-try')}
                 </div>
-                <div className="truncate">
-                  {answers.findLast((answer) => answer) || __('!noun:empty')}
-                </div>
+                <div className="truncate">{lastAnswer || __('!noun:empty')}</div>
               </div>
               <Button variant="secondary">{__('!noun:show')}</Button>
             </div>
@@ -163,7 +189,16 @@ const TodayGame = () => {
               <CredenzaTitle>{__('!noun:your-answers')}</CredenzaTitle>
             </CredenzaHeader>
             <CredenzaBody>
-              <ListAnswer answers={answers} isCorrect={isCorrect} noAnimation hideTitle />
+              {gameType === GameTypes.HOT_DATE ? (
+                <ListAnswerTemperature
+                  answers={answers}
+                  refAnswer={media?.releaseDate}
+                  noAnimation
+                  hideTitle
+                />
+              ) : (
+                <ListAnswer answers={answers} isCorrect={isCorrect} noAnimation hideTitle />
+              )}
             </CredenzaBody>
             <CredenzaFooter>
               <CredenzaClose asChild>

@@ -132,17 +132,30 @@ const MediaDetailContent = ({ mediaId }: MediaDetailContentProps) => {
       </div>
       <p>{media.overview?.fr}</p>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:flex-row lg:grid-cols-5">
-        <SortableWrapper onChange={handleDragEnd} items={media.casts} keyId="name">
-          {casts.map((cast: Cast) => (
-            <Actor key={cast.name} actor={cast} showCharacter isRow={(isXs || isSm) && !isMd} />
-          ))}
-        </SortableWrapper>
-      </div>
-
       <Accordion type="multiple">
+        <AccordionItem value="cast">
+          <AccordionTrigger>Cast</AccordionTrigger>
+          <AccordionContent className="p-2">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:flex-row lg:grid-cols-5">
+              <SortableWrapper onChange={handleDragEnd} items={media.casts} keyId="name">
+                {casts.map((cast: Cast) => (
+                  <Actor
+                    key={cast.name}
+                    actor={cast}
+                    showCharacter
+                    isRow={(isXs || isSm) && !isMd}
+                  />
+                ))}
+              </SortableWrapper>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
         <AccordionItem value="simpleTitles">
-          <AccordionTrigger>Simple titles</AccordionTrigger>
+          <AccordionTrigger>
+            <span className="flex items-center gap-4">
+              Simple titles <Badge>{media.simpleTitles?.length}</Badge>
+            </span>
+          </AccordionTrigger>
           <AccordionContent className="p-2">
             <InputTag
               placeholder="Add title"

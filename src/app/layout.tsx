@@ -28,12 +28,12 @@ export async function generateMetadata(): Promise<Metadata> {
     en: {
       title: 'Blindtus - The Ultimate Movie and TV Show Guessing Game',
       description:
-        'Challenge your knowledge of cinema and TV with Blindtus. Guess movies and TV shows by music, posters, or actors in our fun and interactive game modes: Blindtus, Pixelus, and Castus!',
+        'Challenge your knowledge of cinema and TV with Blindtus. Guess movies and TV shows by music, posters, or actors in our fun and interactive game modes: Blindtus, Pixelus, Castus and Hot Date!',
     },
     fr: {
       title: 'Blindtus - Le Jeu Ultime pour Deviner des Films et Séries',
       description:
-        'Mettez à l’épreuve vos connaissances en cinéma et séries avec Blindtus. Devinez des films et séries grâce à la musique, aux affiches ou aux acteurs dans nos modes de jeu amusants et interactifs : Blindtus, Pixelus et Castus !',
+        'Mettez à l’épreuve vos connaissances en cinéma et séries avec Blindtus. Devinez des films et séries grâce à la musique, aux affiches ou aux acteurs dans nos modes de jeu amusants et interactifs : Blindtus, Pixelus, Castus et Hot Date!',
     },
   };
 

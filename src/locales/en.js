@@ -52,6 +52,10 @@ const translations = {
     null,
     "Play song"
   ],
+  "!noun:played": [
+    null,
+    "Played"
+  ],
   "!noun:privacy": [
     null,
     "Privacy policy"

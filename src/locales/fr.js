@@ -52,6 +52,10 @@ const translations = {
     null,
     "Jouer la musique"
   ],
+  "!noun:played": [
+    null,
+    "Joué"
+  ],
   "!noun:privacy": [
     null,
     "Page de confidentialité"

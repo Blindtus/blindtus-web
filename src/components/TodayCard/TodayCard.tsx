@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { cva } from 'class-variance-authority';
 import { Frown, Trophy } from 'lucide-react';
@@ -34,6 +35,7 @@ type TodayCardProps = {
 };
 
 const TodayCard = ({ className = '', category }: TodayCardProps) => {
+  const router = useRouter();
   const locale = useLocale();
   const __ = useTranslations();
 
@@ -70,6 +72,14 @@ const TodayCard = ({ className = '', category }: TodayCardProps) => {
     return userTodayHistory[category.id];
   }, [category, userTodayHistory]);
 
+  const isCompleted = useMemo(() => {
+    if (!todayHistoryCardInfo) {
+      return false;
+    }
+
+    return todayHistoryCardInfo?.isCompleted;
+  }, [todayHistoryCardInfo]);
+
   const showIcon = useMemo(() => {
     if (!isFetched) {
       return null;
@@ -94,19 +104,28 @@ const TodayCard = ({ className = '', category }: TodayCardProps) => {
     return todayHistoryCardInfo?.attempts.length;
   }, [isFetched, todayHistoryCardInfo]);
 
+  const handleOpenGame = useCallback(() => {
+    router.push(`/today/${category?.slug}`);
+  }, [category?.slug, router]);
+
   return (
-    <Card className={cn(cardVariants({ variant: category.game }), className)}>
+    <Card
+      className={cn(cardVariants({ variant: category.game }), 'cursor-pointer', className)}
+      onClick={handleOpenGame}
+    >
       <CardHeader>
         <CardTitle className="flex justify-between">
           <span>{category.label[locale]}</span> {category?.icon}
         </CardTitle>
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <Button variant="secondary" asChild>
+        <Button variant={isCompleted ? 'outline' : 'secondary'} asChild>
           {isFetching ? (
             <Loader size="small" />
           ) : (
-            <Link href={`/today/${category?.slug}`}>{__('!noun:play')}</Link>
+            <Link href={`/today/${category?.slug}`}>
+              {isCompleted ? __('!noun:played') : __('!noun:play')}
+            </Link>
           )}
         </Button>
         <div className="flex items-center gap-2">
