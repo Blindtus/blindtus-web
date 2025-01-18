@@ -96,8 +96,14 @@ const TodayGame = () => {
     if (!category) {
       return null;
     }
-    return __(`!noun:${category?.type}`);
-  }, [__, category]);
+
+    if (gameType === GameTypes.HOT_DATE) {
+      return __('!text:lookingForReleaseDateMovie');
+      // return 'the release date of the movie';
+    }
+
+    return `${__('!text:lookingForMediaType')} ${__(`!noun:${category?.type}`)}`;
+  }, [__, category, gameType]);
 
   const lastAnswer = useMemo(() => {
     const answer = answers.findLast((answer) => answer);
@@ -128,11 +134,7 @@ const TodayGame = () => {
 
   return (
     <div className="pb-12">
-      {renderMediaType ? (
-        <div className="mb-4 text-xl">
-          {__('!text:lookingForMediaType')} {renderMediaType}
-        </div>
-      ) : null}
+      {renderMediaType ? <div className="mb-4 text-xl">{renderMediaType}</div> : null}
 
       {renderNextCategory()}
 

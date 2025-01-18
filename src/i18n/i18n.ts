@@ -44,3 +44,17 @@ export const transformStringToKey = (input: string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
     .join(''); // Join them back together without any spaces or delimiters
 };
+
+export const getOrdinal = (number: number, locale: string | null = 'en') => {
+  const userLocale = locale || 'en';
+  const suffixes: { [key: string]: { [key: string]: string } } = {
+    en: { one: 'st', two: 'nd', few: 'rd', other: 'th' },
+    fr: { one: 'er', other: 'e' }, // Adjust for French locale
+  };
+
+  const pluralRules = new Intl.PluralRules(userLocale, { type: 'ordinal' });
+  const rule = pluralRules.select(number);
+  const suffix = suffixes[userLocale]?.[rule] || '';
+
+  return `${number}${suffix}`;
+};
