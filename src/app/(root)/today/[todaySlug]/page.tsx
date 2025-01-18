@@ -7,6 +7,7 @@ import { getLocale } from 'next-intl/server';
 
 import Loader from '@/components/Loader/Loader';
 import TodayGame from '@/components/TogayGame/TodayGame';
+import TodayGameRules from '@/components/TogayGame/TodayGameRules';
 import { TODAY_CATEGORIES } from '@/constants/todayCategories';
 import { TodayGameProvider } from '@/context/TodayGameContext';
 import { GameType } from '@/types/today.type';
@@ -98,8 +99,12 @@ const TodayPage = async ({ params }: TodayPageProps) => {
 
   return (
     <main className="container">
-      <div className="mt-16 justify-between md:flex">
-        <h1 className="page-title--no-spacing mb-2">{label}</h1>
+      <div className="mb-2 mt-16 flex items-center justify-between md:justify-normal">
+        <h1 className="page-title--no-spacing">{label}</h1>
+        <TodayGameRules
+          className="ml-4"
+          type={todaySlug as 'blindtus' | 'pixelus' | 'castus' | 'hotDate'}
+        />
       </div>
       <Suspense fallback={<Loader />}>
         <TodayGameProvider gameType={category.id as GameType}>

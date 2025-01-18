@@ -71,7 +71,13 @@ const TodayGameHotDate = () => {
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormControl>
-                  <Input type="number" min={1900} {...field} isWiggle={isAnswerCorrect === false} />
+                  <Input
+                    type="number"
+                    min={1900}
+                    {...field}
+                    isWiggle={isAnswerCorrect === false}
+                    placeholder="1989"
+                  />
                 </FormControl>
               </FormItem>
             )}

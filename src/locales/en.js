@@ -24,6 +24,10 @@ const translations = {
     null,
     "Empty"
   ],
+  "!noun:got-it": [
+    null,
+    "Got it!"
+  ],
   "!noun:load-song": [
     null,
     "Load the song"
@@ -63,6 +67,10 @@ const translations = {
   "!noun:returning-serie": [
     null,
     "Ongoing"
+  ],
+  "!noun:rules": [
+    null,
+    "Rules"
   ],
   "!noun:send": [
     null,
@@ -152,6 +160,10 @@ const translations = {
     null,
     "We are looking for a"
   ],
+  "!text:lookingForReleaseDateMovie": [
+    null,
+    "We are looking for the release date of the movie"
+  ],
   "!text:no-try": [
     null,
     "No try"
@@ -167,6 +179,78 @@ const translations = {
   "!text:today-game-title": [
     null,
     "Daily challenges"
+  ],
+  "!text:today-rules-blindtus-franchise": [
+    null,
+    "For movies that are part of a <b>franchise or trilogy</b>, you can enter the franchise name instead of the specific title. Example: Instead of  “The Lord of the Rings: The Fellowship of the Ring,” you can type “The Lord of the Rings”."
+  ],
+  "!text:today-rules-blindtus-last-try": [
+    null,
+    "On your <b>last try</b>, you'll be presented with <b>8 possible titles</b>—you must select the correct one."
+  ],
+  "!text:today-rules-blindtus-progression": [
+    null,
+    "Each attempt unlocks a progressively longer clip of the song:"
+  ],
+  "!text:today-rules-blindtus-progression-item": [
+    null,
+    "{ordinal} try: {seconds} seconds"
+  ],
+  "!text:today-rules-blindtus-title": [
+    null,
+    "Find the Movie or TV Show by its music"
+  ],
+  "!text:today-rules-blindtus-try-count": [
+    null,
+    "You have <b>{count} tries</b> to guess the correct movie or TV show."
+  ],
+  "!text:today-rules-castus-progression": [
+    null,
+    "Each attempt unlocks a new actor."
+  ],
+  "!text:today-rules-castus-title": [
+    null,
+    "Find the Movie or TV Show by its cast"
+  ],
+  "!text:today-rules-hotdate-feedback": [
+    null,
+    "Use the feedback to adjust your guesses and find the correct year."
+  ],
+  "!text:today-rules-hotdate-progression": [
+    null,
+    "After each guess, you'll receive a temperature clue to guide you:"
+  ],
+  "!text:today-rules-hotdate-progression-cold": [
+    null,
+    "Cold (Blue): Your guess is more than 6 years away."
+  ],
+  "!text:today-rules-hotdate-progression-correct": [
+    null,
+    "Correct (Green): You’ve found the exact release year!"
+  ],
+  "!text:today-rules-hotdate-progression-hot": [
+    null,
+    "Hot (Red): Your guess is within 2 years of the correct year."
+  ],
+  "!text:today-rules-hotdate-progression-warm": [
+    null,
+    "Warm (Orange): Your guess is within 6 years of the correct year."
+  ],
+  "!text:today-rules-hotdate-title": [
+    null,
+    "Guess the release year of the given movie. Use the temperature clues to get closer!"
+  ],
+  "!text:today-rules-infinite-try-count": [
+    null,
+    "There is no limit on the number of tries."
+  ],
+  "!text:today-rules-pixelus-progression": [
+    null,
+    "At each try, the poster becomes less pixelated."
+  ],
+  "!text:today-rules-pixelus-title": [
+    null,
+    "Find the Movie or TV Show by its pixelated poster"
   ]
 }
 };
