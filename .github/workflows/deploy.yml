@@ -49,12 +49,24 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Navigate to the project directory
             cd /home/website/www/blindtus-apps/web
+
+            # Reset any local changes and pull the latest code
             git reset --hard
             git pull origin main
+
+            # Ensure correct ownership and permissions
+            sudo chown -R github:developer .
+            sudo chmod -R g+rw .
+            sudo chmod g+s .
+
+            # Install dependencies and build the project
             npm ci
             npm run lint
             npm run build
+
+            # Restart the application
             pm2 startOrRestart ./scripts/pm2.config.js
 
   notification:
