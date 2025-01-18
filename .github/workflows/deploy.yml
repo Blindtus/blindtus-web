@@ -56,10 +56,9 @@ jobs:
             git reset --hard
             git pull origin main
 
-            # Ensure correct ownership and permissions
-            sudo chown -R github:developer .
-            sudo chmod -R g+rw .
-            sudo chmod g+s .
+            # Ensure all files are group-writable
+            find . -type d -exec chmod g+rwx {} +
+            find . -type f -exec chmod g+rw {} +
 
             # Install dependencies and build the project
             npm ci
