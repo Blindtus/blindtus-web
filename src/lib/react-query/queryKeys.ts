@@ -21,4 +21,8 @@ export const QUERY_KEYS = {
   TODAY_ALL: 'todayAll',
   TODAY_BY_ID: 'todayById',
   TODAY: 'today',
+
+  // Analytic
+  ANALYTIC_TODAY: 'analyticToday',
+  ANALYTIC_ALL_TIME: 'analyticAllTime',
 };
