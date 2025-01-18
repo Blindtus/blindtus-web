@@ -13,6 +13,7 @@ import {
 import { usePlausible } from 'next-plausible';
 
 import { TODAY_CATEGORIES } from '@/constants/todayCategories';
+import { incrementCompletedCount, incrementPlayCount, incrementWinCount } from '@/lib/api/analytic';
 import { useGetToday } from '@/lib/react-query/TodayQueries';
 import type { Music } from '@/types/audio.type';
 import type { Category } from '@/types/category.type';
@@ -128,7 +129,7 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
   );
 
   const saveHistory = useCallback(
-    ({
+    async ({
       answer,
       status,
       temperature,
@@ -150,10 +151,19 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
         isCorrect,
       });
 
+      if (currentStep === 0) {
+        await incrementPlayCount(gameType);
+      }
+
       if (isCompleted) {
+        await incrementCompletedCount(gameType);
         plausible(`todayCompleted_${gameType}`, {
           props: { attemps: currentStep + 1, isCorrect },
         });
+      }
+
+      if (isCorrect) {
+        await incrementWinCount(gameType);
       }
     },
     [todayGame?._id, gameType, answers, currentStep, plausible],

@@ -119,7 +119,7 @@ const TodayCard = ({ className = '', category }: TodayCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <Button variant={isCompleted ? 'outline' : 'secondary'} asChild>
+        <Button variant={isCompleted ? 'tertiary' : 'secondary'} asChild>
           {isFetching ? (
             <Loader size="small" />
           ) : (
