@@ -59,19 +59,24 @@ const TodayAnalytic = ({ className = '' }: Props) => {
     <Card className={cn(className)}>
       <CardHeader>
         <CardTitle>Today analytics</CardTitle>
-      </CardHeader>
-      <CardContent>
+
         <Tabs
           defaultValue="today"
-          className="w-[400px]"
+          className="w-auto max-w-xs"
           value={selectedTab}
           onValueChange={setSelectedTab}
         >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="today">Today</TabsTrigger>
-            <TabsTrigger value="all-time">All time</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 px-1.5 py-1">
+            <TabsTrigger value="today" className="py-1">
+              Today
+            </TabsTrigger>
+            <TabsTrigger value="all-time" className="py-1">
+              All time
+            </TabsTrigger>
           </TabsList>
         </Tabs>
+      </CardHeader>
+      <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />

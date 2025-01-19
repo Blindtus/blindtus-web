@@ -55,13 +55,13 @@ export async function generateMetadata(): Promise<Metadata> {
       url: 'https://blindtus.com',
       siteName: 'Blindtus',
 
-      images: [
-        {
-          url: 'https://blindtus.com/cover.png',
-          width: 800,
-          height: 382,
-        },
-      ],
+      // images: [
+      //   {
+      //     url: 'https://blindtus.com/cover.png',
+      //     width: 800,
+      //     height: 382,
+      //   },
+      // ],
       locale: 'en_US',
       type: 'website',
     },
@@ -69,7 +69,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       site: '@blindtus',
       creator: '@cl3tus_',
-      images: 'https://blindtus.com/cover.png',
+      // images: 'https://blindtus.com/cover.png',
     },
   };
 }
@@ -90,6 +90,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <link rel="alternate" hrefLang="fr" href="https://blindtus.com" />
+      <link rel="alternate" hrefLang="en" href="https://blindtus.com" />
+      <link rel="alternate" hrefLang="x-default" href="https://blindtus.com" />
       <body className={fontSans.variable}>
         <PlausibleProvider
           domain="blindtus.com"

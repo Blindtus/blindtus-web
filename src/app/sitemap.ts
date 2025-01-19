@@ -7,6 +7,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
+      alternates: {
+        languages: {
+          en: 'https://blindtus.com',
+          fr: 'https://blindtus.com',
+        },
+      },
     },
   ];
 }
