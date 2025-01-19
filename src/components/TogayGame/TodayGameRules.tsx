@@ -47,7 +47,7 @@ const TodayGameRules = ({ className, type }: Props) => {
           {__('!noun:rules')}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-[calc(100%-2em)]">
         <DialogHeader className="mt-8">{modalContent}</DialogHeader>
         <DialogFooter className="mt-4">
           <Button onClick={() => setOpen(false)}>{__('!noun:got-it')}</Button>
