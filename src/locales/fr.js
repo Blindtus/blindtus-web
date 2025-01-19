@@ -186,7 +186,7 @@ const translations = {
   ],
   "!text:today-rules-blindtus-last-try": [
     null,
-    "Lors de votre <b>dernière tentative</b>, vous serez présenté(e) avec <b>8 titres possibles</b>—vous devez choisir le bon."
+    "Lors de votre <b>dernière tentative</b>, vous serez présenté(e) avec <b>{count} titres possibles</b>—vous devez choisir le bon."
   ],
   "!text:today-rules-blindtus-progression": [
     null,

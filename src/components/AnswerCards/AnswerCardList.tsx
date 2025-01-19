@@ -5,7 +5,7 @@ import { type SimilarityStatusType } from '@/utils/similarityUtils';
 
 import AnswerCard from './AnswerCard';
 
-const NUMBER_CARDS = 7;
+const NUMBER_CARDS = 5;
 
 type AnswerCardListProps = {
   media: Media;
@@ -23,7 +23,7 @@ const AnswerCardList = ({ media, onClick }: AnswerCardListProps) => {
   }, [media]);
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid gap-4 md:grid-cols-2">
       {mediaList.map((media, index) => (
         <AnswerCard
           key={index}

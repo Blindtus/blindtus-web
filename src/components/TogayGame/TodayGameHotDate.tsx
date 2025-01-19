@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import MediaPoster from '@/components/Poster/MediaPoster';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -13,8 +14,6 @@ import { useTodayGame } from '@/context/TodayGameContext';
 import useViewport from '@/hooks/use-viewport';
 import { TodayGameValidation } from '@/lib/validations/today';
 import { type TemperatureType, temperatureTypes } from '@/utils/similarityUtils';
-
-import MediaPoster from '../Poster/MediaPoster';
 
 const TodayGameHotDate = () => {
   const __ = useTranslations();
