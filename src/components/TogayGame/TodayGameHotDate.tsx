@@ -75,7 +75,7 @@ const TodayGameHotDate = () => {
                     min={1900}
                     {...field}
                     isWiggle={isAnswerCorrect === false}
-                    placeholder="1989"
+                    placeholder="1994"
                   />
                 </FormControl>
               </FormItem>
