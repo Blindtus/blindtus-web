@@ -13,6 +13,7 @@ import ProgressBar from '@/components/ProgressBar/ProgressBar';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useAudioContext } from '@/context/AudioContext';
 import { useTodayGame } from '@/context/TodayGameContext';
 import useViewport from '@/hooks/use-viewport';
 import { TodayGameValidation } from '@/lib/validations/today';
@@ -35,9 +36,16 @@ const TodayGameAudio = () => {
   const [isAudioLoaded, setIsAudioLoaded] = useState(false);
   const { currentStep, isCompleted, music, checkAnswer, isLoading, media, category } =
     useTodayGame();
+  const { volume } = useAudioContext();
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const { isXs } = useViewport();
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume]);
 
   const form = useForm<z.infer<typeof TodayGameValidation>>({
     resolver: zodResolver(TodayGameValidation),

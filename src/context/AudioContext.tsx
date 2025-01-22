@@ -1,58 +1,44 @@
-import React, {
-  type ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-type AudioContextProps = {
-  currentlyPlaying: string | null;
-  playAudio: (_id: string) => void;
-  registerAudio: (_id: string, _audioRef: HTMLAudioElement) => void;
-  unregisterAudio: (_id: string, removeCurrentPlaying?: boolean) => void;
+type Props = {
+  volume: number;
+  setVolume: (volume: number) => void;
 };
 
-const AudioContext = createContext<AudioContextProps | undefined>(undefined);
+const AudioContext = createContext<Props | undefined>({
+  volume: 80,
+  setVolume: () => {},
+});
 
-export const useAudioContext = (): AudioContextProps => {
+export const useAudioContext = (): Props => {
   const context = useContext(AudioContext);
   if (!context) {
-    throw new Error('useAudioContext must be used within an AudioProvider');
+    throw new Error('useAudioContext must be used within a AudioContextProvider');
   }
   return context;
 };
 
-type AudioProviderProps = {
+type ProviderProps = {
   children: ReactNode;
 };
 
-export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
-  const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
-
-  const playAudio = (id: string) => {
-    if (currentlyPlaying && currentlyPlaying !== id) {
-      audioRefs.current[currentlyPlaying]?.pause();
-    }
-    setCurrentlyPlaying(id);
-  };
-
-  const registerAudio = (id: string, audioRef: HTMLAudioElement) => {
-    audioRefs.current[id] = audioRef;
-  };
-
-  const unregisterAudio = useCallback((id: string, removeCurrentPlaying = false) => {
-    if (removeCurrentPlaying) {
-      setCurrentlyPlaying(null);
-    }
-    delete audioRefs.current[id];
-  }, []);
-
-  return (
-    <AudioContext.Provider value={{ currentlyPlaying, playAudio, registerAudio, unregisterAudio }}>
-      {children}
-    </AudioContext.Provider>
+export const AudioContextProvider: React.FC<ProviderProps> = ({ children }) => {
+  const [volume, setVolume] = useState(
+    localStorage.getItem('volume') ? Number(localStorage.getItem('volume')) : 80,
   );
+
+  useEffect(() => {
+    // save volume value in local storage
+    localStorage.setItem('volume', volume.toString());
+  }, [volume]);
+
+  const value = useMemo(
+    () => ({
+      volume,
+      setVolume,
+    }),
+    [volume],
+  );
+
+  return <AudioContext.Provider value={value}>{children}</AudioContext.Provider>;
 };

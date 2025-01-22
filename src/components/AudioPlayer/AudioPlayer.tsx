@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Slider } from '@/components/ui/slider';
-import { useAudioContext } from '@/context/AudioContext';
+import { useAdminAudioContext } from '@/context/AdminAudioContext';
 import { cn } from '@/lib/utils';
 import { secondsToMinutes } from '@/utils/audio';
 
@@ -58,7 +58,7 @@ const AudioPlayer = ({
   isSmall = false,
 }: AudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const { currentlyPlaying, playAudio, registerAudio, unregisterAudio } = useAudioContext();
+  const { currentlyPlaying, playAudio, registerAudio, unregisterAudio } = useAdminAudioContext();
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(defaultDuration ?? 0);
   const [timecode, setTimecode] = useState(defaultStartAt ?? 0);

@@ -5,7 +5,7 @@ import React from 'react';
 import { ThemeProvider } from 'next-themes';
 
 import AdminPanelLayout from '@/components/Admin/Panel/Panel';
-import { AudioProvider } from '@/context/AudioContext';
+import { AudioProvider } from '@/context/AdminAudioContext';
 
 type AdminLayoutProps = {
   children: React.ReactNode;

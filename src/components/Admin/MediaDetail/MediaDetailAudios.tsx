@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import AudioPlayer from '@/components/AudioPlayer/AudioPlayer';
 import Loader from '@/components/Loader/Loader';
 import { AddAudioModal, EditAudioModal } from '@/components/Modal';
-import { useAudioContext } from '@/context/AudioContext';
+import { useAdminAudioContext } from '@/context/AdminAudioContext';
 import { useGetMediaMusics } from '@/lib/react-query/MediaQueries';
 import { useDeleteMusic } from '@/lib/react-query/MusicQueries';
 import type { Music } from '@/types/audio.type';
@@ -15,7 +15,7 @@ type MediaDetailAudiosProps = {
 
 const MediaDetailAudios = ({ media }: MediaDetailAudiosProps) => {
   const [selectedAudio, setSelectedAudio] = useState<Music | null>(null);
-  const { unregisterAudio } = useAudioContext();
+  const { unregisterAudio } = useAdminAudioContext();
   const { data: audios, isFetching: isAudiosFetching } = useGetMediaMusics(media._id);
   const { mutateAsync: deleteMusic } = useDeleteMusic();
 

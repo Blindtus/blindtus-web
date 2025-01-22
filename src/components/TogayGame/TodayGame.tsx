@@ -30,6 +30,7 @@ import { getCurrentLocale } from '@/utils/i18nUtils';
 import { evaluateNumber } from '@/utils/similarityUtils';
 
 import ListAnswerTemperature from '../Answer/ListAnswerTemperature';
+import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import TodayGameAudio from './TodayGameAudio';
 import TodayGameCastus from './TodayGameCastus';
 import TodayGameHotDate from './TodayGameHotDate';
@@ -159,7 +160,8 @@ const TodayGame = () => {
             ) : null}
           </div>
 
-          <div className="hidden sm:col-span-3 sm:block xl:col-span-2">
+          <div className="hidden flex-col gap-8 sm:col-span-3 sm:flex xl:col-span-2">
+            {gameType === GameTypes.BLINDTUS ? <VolumeSlider className="-mt-8" /> : null}
             {gameType === GameTypes.HOT_DATE ? (
               <ListAnswerTemperature answers={answers} refAnswer={media?.releaseDate} />
             ) : (
