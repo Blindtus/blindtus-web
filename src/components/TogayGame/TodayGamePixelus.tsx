@@ -44,7 +44,12 @@ const TodayGamePixelus = () => {
 
         if (isCorrect) {
           const jsConfetti = new JSConfetti();
-          jsConfetti.addConfetti();
+          jsConfetti.addConfetti({
+            emojis: ['🍿', '🎬'],
+            confettiRadius: 50,
+            confettiNumber: 120,
+            emojiSize: 80,
+          });
         }
 
         window.setTimeout(() => {
