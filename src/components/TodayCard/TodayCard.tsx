@@ -110,7 +110,11 @@ const TodayCard = ({ className = '', category }: TodayCardProps) => {
 
   return (
     <Card
-      className={cn(cardVariants({ variant: category.game }), 'cursor-pointer', className)}
+      className={cn(
+        cardVariants({ variant: category.game }),
+        'cursor-pointer rounded-md',
+        className,
+      )}
       onClick={handleOpenGame}
     >
       <CardHeader>
