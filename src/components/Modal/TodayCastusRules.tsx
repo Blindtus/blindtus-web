@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { DialogTitle } from '@/components/ui/dialog';
 
 const TodayCastusRules = () => {
   const __ = useTranslations();
@@ -11,8 +11,8 @@ const TodayCastusRules = () => {
     <>
       <DialogTitle className="leading-6">{__('!text:today-rules-castus-title')}</DialogTitle>
 
-      <DialogDescription>
-        <ol className="mt-4 list-decimal space-y-4 pl-4 text-left text-base text-neutral-300">
+      <div>
+        <ol className="mt-4 list-decimal space-y-4 pl-5 text-left text-base text-neutral-300">
           <li>
             {/* __('!text:today-rules-blindtus-try-count') */}
             {__.rich('!text:today-rules-blindtus-try-count', {
@@ -28,7 +28,7 @@ const TodayCastusRules = () => {
             })}
           </li>
         </ol>
-      </DialogDescription>
+      </div>
     </>
   );
 };
