@@ -21,6 +21,7 @@ import {
 import MediaCardGame from '@/components/MediaCard/MediaCardGame';
 import Steps from '@/components/Steps/Steps';
 import { Button } from '@/components/ui/button';
+import { AudioContextProvider } from '@/context/AudioContext';
 import { useTodayGame } from '@/context/TodayGameContext';
 import { cn } from '@/lib/utils';
 import { LocalMediaType } from '@/types/category.type';
@@ -134,85 +135,87 @@ const TodayGame = () => {
   }, [answers, gameType, media?.releaseDate]);
 
   return (
-    <div className="pb-12">
-      {renderMediaType ? <div className="mb-4 text-xl">{renderMediaType}</div> : null}
+    <AudioContextProvider>
+      <div className="pb-12">
+        {renderMediaType ? <div className="mb-4 text-xl">{renderMediaType}</div> : null}
 
-      {renderNextCategory()}
+        {renderNextCategory()}
 
-      <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-8 gap-8">
-          <div className="col-span-8 flex flex-col gap-4 sm:col-span-5 xl:col-span-6">
-            <Steps steps={STEPS} active={currentStep} isCorrect={isCorrect} />
-            {!isCompleted ? (
-              renderGame()
-            ) : (
-              <div>
-                <MediaCardGame />
-              </div>
-            )}
-
-            {!isCompleted && media && gameType === 'blindtus' ? (
-              <Clues
-                media={media}
-                mediaType={category?.slug as LocalMediaType}
-                currentStep={currentStep}
-              />
-            ) : null}
-          </div>
-
-          <div className="hidden flex-col gap-8 sm:col-span-3 sm:flex xl:col-span-2">
-            {gameType === GameTypes.BLINDTUS ? <VolumeSlider className="-mt-8" /> : null}
-            {gameType === GameTypes.HOT_DATE ? (
-              <ListAnswerTemperature answers={answers} refAnswer={media?.releaseDate} />
-            ) : (
-              <ListAnswer answers={answers} isCorrect={isCorrect} />
-            )}
-          </div>
-        </div>
-
-        <Credenza>
-          <CredenzaTrigger asChild className="fixed inset-x-4 bottom-4 z-40 sm:hidden">
-            <div
-              className={cn(
-                'flex items-center gap-4 rounded border bg-slate-900 p-2',
-                isCorrect ? 'border-emerald-400' : 'border-pink-500',
-                !answers.length ? 'border-slate-800' : null,
-              )}
-            >
-              <div className="flex flex-1 flex-col overflow-hidden rounded-md font-medium disabled:pointer-events-none disabled:opacity-50">
-                <div className="text-sm">
-                  {answers.length === 0 ? __('!text:no-try') : __('!text:last-try')}
-                </div>
-                <div className="truncate">{lastAnswer || __('!noun:empty')}</div>
-              </div>
-              <Button variant="secondary">{__('!noun:show')}</Button>
-            </div>
-          </CredenzaTrigger>
-          <CredenzaContent>
-            <CredenzaHeader>
-              <CredenzaTitle>{__('!noun:your-answers')}</CredenzaTitle>
-            </CredenzaHeader>
-            <CredenzaBody>
-              {gameType === GameTypes.HOT_DATE ? (
-                <ListAnswerTemperature
-                  answers={answers}
-                  refAnswer={media?.releaseDate}
-                  noAnimation
-                  hideTitle
-                />
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-8 gap-8">
+            <div className="col-span-8 flex flex-col gap-4 sm:col-span-5 xl:col-span-6">
+              <Steps steps={STEPS} active={currentStep} isCorrect={isCorrect} />
+              {!isCompleted ? (
+                renderGame()
               ) : (
-                <ListAnswer answers={answers} isCorrect={isCorrect} noAnimation hideTitle />
+                <div>
+                  <MediaCardGame />
+                </div>
               )}
-            </CredenzaBody>
-            <CredenzaFooter>
-              <CredenzaClose asChild>
-                <button>{__('!noun:close')}</button>
-              </CredenzaClose>
-            </CredenzaFooter>
-          </CredenzaContent>
-        </Credenza>
+
+              {!isCompleted && media && gameType === 'blindtus' ? (
+                <Clues
+                  media={media}
+                  mediaType={category?.slug as LocalMediaType}
+                  currentStep={currentStep}
+                />
+              ) : null}
+            </div>
+
+            <div className="hidden flex-col gap-8 sm:col-span-3 sm:flex xl:col-span-2">
+              {gameType === GameTypes.BLINDTUS ? <VolumeSlider className="-mt-8" /> : null}
+              {gameType === GameTypes.HOT_DATE ? (
+                <ListAnswerTemperature answers={answers} refAnswer={media?.releaseDate} />
+              ) : (
+                <ListAnswer answers={answers} isCorrect={isCorrect} />
+              )}
+            </div>
+          </div>
+
+          <Credenza>
+            <CredenzaTrigger asChild className="fixed inset-x-4 bottom-4 z-40 sm:hidden">
+              <div
+                className={cn(
+                  'flex items-center gap-4 rounded border bg-slate-900 p-2',
+                  isCorrect ? 'border-emerald-400' : 'border-pink-500',
+                  !answers.length ? 'border-slate-800' : null,
+                )}
+              >
+                <div className="flex flex-1 flex-col overflow-hidden rounded-md font-medium disabled:pointer-events-none disabled:opacity-50">
+                  <div className="text-sm">
+                    {answers.length === 0 ? __('!text:no-try') : __('!text:last-try')}
+                  </div>
+                  <div className="truncate">{lastAnswer || __('!noun:empty')}</div>
+                </div>
+                <Button variant="secondary">{__('!noun:show')}</Button>
+              </div>
+            </CredenzaTrigger>
+            <CredenzaContent>
+              <CredenzaHeader>
+                <CredenzaTitle>{__('!noun:your-answers')}</CredenzaTitle>
+              </CredenzaHeader>
+              <CredenzaBody>
+                {gameType === GameTypes.HOT_DATE ? (
+                  <ListAnswerTemperature
+                    answers={answers}
+                    refAnswer={media?.releaseDate}
+                    noAnimation
+                    hideTitle
+                  />
+                ) : (
+                  <ListAnswer answers={answers} isCorrect={isCorrect} noAnimation hideTitle />
+                )}
+              </CredenzaBody>
+              <CredenzaFooter>
+                <CredenzaClose asChild>
+                  <button>{__('!noun:close')}</button>
+                </CredenzaClose>
+              </CredenzaFooter>
+            </CredenzaContent>
+          </Credenza>
+        </div>
       </div>
-    </div>
+    </AudioContextProvider>
   );
 };
 

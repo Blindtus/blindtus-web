@@ -41,7 +41,7 @@ const TodayGameRules = ({ className, type }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={cn(className)}>
+      <DialogTrigger className={cn(className)} asChild>
         <Button variant="secondary">
           <HelpCircleIcon />
           {__('!noun:rules')}

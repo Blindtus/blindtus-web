@@ -14,7 +14,7 @@ type Props = {
 const VolumeSlider = ({ className = '' }: Props) => {
   const { volume, setVolume } = useAudioContext();
 
-  if (isMobileDevice()) {
+  if (isMobileDevice() || !volume) {
     return null;
   }
 
@@ -27,12 +27,7 @@ const VolumeSlider = ({ className = '' }: Props) => {
         <div className="w-4">
           <VolumeIcon />
         </div>
-        <Slider
-          defaultValue={[volume]}
-          max={100}
-          step={1}
-          onValueChange={(v) => setVolume(Number(v))}
-        />
+        <Slider value={[volume]} max={100} step={1} onValueChange={(v) => setVolume(Number(v))} />
         <div>
           <Volume2Icon />
         </div>
