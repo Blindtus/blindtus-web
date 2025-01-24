@@ -27,6 +27,7 @@ import { formatDateFr } from '@/utils/date';
 
 import MediaDetailAudios from './MediaDetailAudios';
 import MediaDetailContent from './MediaDetailContent';
+import MediaDetailTests from './MediaDetailTests';
 
 type MediaDetailProps = {
   mediaId: string;
@@ -109,6 +110,9 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
             <TabsTrigger value="audios" className="w-full">
               Audios
             </TabsTrigger>
+            <TabsTrigger value="tests" className="w-full">
+              Tests
+            </TabsTrigger>
           </TabsList>
         </div>
         <div className="sm:col-span-3 lg:col-span-5">
@@ -154,6 +158,9 @@ const MediaDetail = ({ mediaId }: MediaDetailProps) => {
           </TabsContent>
           <TabsContent value="audios">
             <MediaDetailAudios media={media} />
+          </TabsContent>
+          <TabsContent value="tests">
+            <MediaDetailTests media={media} />
           </TabsContent>
         </div>
       </div>

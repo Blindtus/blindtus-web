@@ -30,6 +30,7 @@ const ListAnswer = ({
         <h2 className="mb-4 text-lg font-semibold leading-4">{__('!noun:your-answers')}</h2>
       ) : null}
       <div className={cn('flex flex-col-reverse gap-2', className)}>
+        {!answers.length ? __('!noun:empty') : null}
         <AnimatePresence initial>
           {answers.map((answer, index) => (
             <motion.div

@@ -22,7 +22,7 @@ const translations = {
   ],
   "!noun:empty": [
     null,
-    "Empty"
+    "No guesses yet"
   ],
   "!noun:got-it": [
     null,
