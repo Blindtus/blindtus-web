@@ -43,7 +43,7 @@ const TodayGameAudio = () => {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume / 100;
+      audioRef.current.volume = (volume || 80) / 100;
     }
   }, [volume]);
 

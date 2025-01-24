@@ -1,7 +1,9 @@
+'use client';
+
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 type Props = {
-  volume: number;
+  volume?: number;
   setVolume: (volume: number) => void;
 };
 
@@ -23,13 +25,20 @@ type ProviderProps = {
 };
 
 export const AudioContextProvider: React.FC<ProviderProps> = ({ children }) => {
-  const [volume, setVolume] = useState(
-    localStorage.getItem('volume') ? Number(localStorage.getItem('volume')) : 80,
-  );
+  const [volume, setVolume] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    // Access `localStorage` only after the component has mounted
+    const savedVolume = localStorage.getItem('volume') || 80;
+
+    if (savedVolume) {
+      setVolume(Number(savedVolume));
+    }
+  }, []);
 
   useEffect(() => {
     // save volume value in local storage
-    localStorage.setItem('volume', volume.toString());
+    localStorage.setItem('volume', (volume ?? 80).toString());
   }, [volume]);
 
   const value = useMemo(

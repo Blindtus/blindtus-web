@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Globe } from 'lucide-react';
 
@@ -16,12 +16,28 @@ import type { Locale } from '@/i18n/config';
 import { setUserLocale } from '@/i18n/locale';
 import { getCurrentLocale } from '@/utils/i18nUtils';
 
+import Loader from '../Loader';
+
 const LocaleSelect = () => {
-  const currentLocale = getCurrentLocale();
+  const [currentLocale, setCurrentLocale] = useState<Locale | null>(null);
+
+  useEffect(() => {
+    const locale = getCurrentLocale();
+    setCurrentLocale(locale as Locale);
+  }, []);
 
   const handleChangeLocale = useCallback((locale: string) => {
     setUserLocale(locale as Locale);
+    setCurrentLocale(locale as Locale);
   }, []);
+
+  if (!currentLocale) {
+    return (
+      <Button variant="secondary">
+        <Globe size={16} className="mr-2" /> <Loader size="small" />
+      </Button>
+    );
+  }
 
   return (
     <DropdownMenu>
