@@ -22,7 +22,7 @@ const translations = {
   ],
   "!noun:empty": [
     null,
-    "Vide"
+    "Aucune réponse"
   ],
   "!noun:got-it": [
     null,
@@ -103,6 +103,10 @@ const translations = {
   "!noun:your-answers": [
     null,
     "Vos réponses"
+  ],
+  "!text:alert-come-back": [
+    null,
+    "Vous avez terminé le jeu ! Les nouveaux jeux seront disponibles à <b>{time}</b> le <b>{date}</b> selon votre fuseau horaire."
   ],
   "!text:clue-actors": [
     null,

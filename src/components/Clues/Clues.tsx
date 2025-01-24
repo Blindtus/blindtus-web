@@ -20,9 +20,10 @@ type CluesProps = {
   media: Media;
   mediaType: LocalMediaType;
   currentStep?: number;
+  expandAll?: boolean;
 };
 
-const Clues = ({ className, media, currentStep = 0, mediaType }: CluesProps) => {
+const Clues = ({ className, media, currentStep = 0, mediaType, expandAll = false }: CluesProps) => {
   const __ = useTranslations();
   const currentLocale = getCurrentLocale();
   const [tabValue, setTabValue] = useState<Array<string>>([]);
@@ -31,6 +32,12 @@ const Clues = ({ className, media, currentStep = 0, mediaType }: CluesProps) => 
   useEffect(() => {
     setTabValue((prev) => [...prev, `tab-${currentStep}`]);
   }, [currentStep]);
+
+  useEffect(() => {
+    if (expandAll) {
+      setTabValue(['tab-1', 'tab-2', 'tab-3', 'tab-4']);
+    }
+  }, [expandAll]);
 
   const cluesAttempt1 = useMemo(() => {
     switch (mediaType) {
