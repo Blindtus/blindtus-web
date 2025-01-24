@@ -104,6 +104,10 @@ const translations = {
     null,
     "Your answers"
   ],
+  "!text:alert-come-back": [
+    null,
+    "You've completed the game! New games will be available at <b>{time}</b> on <b>{date}</b> in your timezone."
+  ],
   "!text:clue-actors": [
     null,
     "Actors:"

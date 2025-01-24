@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import AlertComeBack from '@/components/Alert/AlertComeBack';
 import ListTodayCards from '@/components/ListTodayCards/ListTodayCards';
 import ShareTodayResults from '@/components/Share/ShareTodayResults';
 
@@ -15,7 +16,11 @@ export default async function Home() {
         <ShareTodayResults className="mb-4 w-full xs:mb-0 xs:w-auto" />
       </div>
 
-      <ListTodayCards />
+      <div className="flex flex-col gap-4">
+        <AlertComeBack />
+
+        <ListTodayCards />
+      </div>
     </main>
   );
 }
