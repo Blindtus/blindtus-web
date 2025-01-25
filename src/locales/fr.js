@@ -255,6 +255,18 @@ const translations = {
   "!text:today-rules-pixelus-title": [
     null,
     "Trouvez le film ou la série TV à partir de son affiche pixelisée"
+  ],
+  "!text:today-rules-titletwist-progression": [
+    null,
+    "À chaque étape, le titre devient plus facile à déchiffrer. Plus vous progressez, plus les lettres se rapprochent de leur position originale."
+  ],
+  "!text:today-rules-titletwist-result": [
+    null,
+    "Il n'est pas nécessaire de remettre toutes les lettres dans le bon ordre, seule la bonne réponse compte !"
+  ],
+  "!text:today-rules-titletwist-title": [
+    null,
+    "Trouve le film ou la série télévisée par son titre mélangé"
   ]
 }
 };

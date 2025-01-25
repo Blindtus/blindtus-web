@@ -14,6 +14,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetAllTimeTodayAnalytic, useGetTodayAnalytic } from '@/lib/react-query/AnalyticQueries';
 import { cn } from '@/lib/utils';
+import { GameType } from '@/types/today.type';
 
 const chartConfig = {
   played: {
@@ -32,9 +33,10 @@ const chartConfig = {
 
 type Props = {
   className?: string;
+  gameType: GameType;
 };
 
-const TodayAnalytic = ({ className = '' }: Props) => {
+const TodayAnalytic = ({ className = '', gameType }: Props) => {
   const [selectedTab, setSelectedTab] = useState('today');
   const { data: todayAnalytic } = useGetTodayAnalytic();
   const { data: allTimeAnalytic } = useGetAllTimeTodayAnalytic();
@@ -47,18 +49,24 @@ const TodayAnalytic = ({ className = '' }: Props) => {
   const chartData = useMemo(() => {
     if (!analytic) return [];
 
-    return analytic.categories.map((item) => ({
-      category: item.category,
-      played: item.playedCount,
-      completed: item.completedCount,
-      win: item.winCount,
-    }));
-  }, [analytic]);
+    const data = analytic.categories.find((item) => item.category === gameType);
+
+    if (!data) return [];
+
+    return [
+      {
+        category: data.category,
+        played: data.playedCount,
+        completed: data.completedCount,
+        win: data.winCount,
+      },
+    ];
+  }, [analytic, gameType]);
 
   return (
     <Card className={cn(className)}>
       <CardHeader>
-        <CardTitle>Today analytics</CardTitle>
+        <CardTitle>Today analytics - {gameType}</CardTitle>
 
         <Tabs
           defaultValue="today"

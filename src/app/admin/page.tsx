@@ -30,8 +30,12 @@ const AdminPage = () => {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          <TodayAnalytic className="col-span-4" />
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-8 lg:grid-cols-12">
+          <TodayAnalytic className="col-span-4" gameType="blindtus" />
+          <TodayAnalytic className="col-span-4" gameType="pixelus" />
+          <TodayAnalytic className="col-span-4" gameType="castus" />
+          <TodayAnalytic className="col-span-4" gameType="hotDate" />
+          <TodayAnalytic className="col-span-4" gameType="titleTwist" />
         </div>
       </div>
     </ContentLayout>

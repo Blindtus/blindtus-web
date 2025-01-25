@@ -25,6 +25,7 @@ const cardVariants = cva('select-none rounded-sm text-white', {
       pixelus: 'bg-gradient-to-b from-category-pixelus to-primary-special',
       castus: 'bg-gradient-to-b from-category-castus to-primary-special',
       hotDate: 'bg-gradient-to-b from-category-hotDate to-primary-special',
+      titleTwist: 'bg-gradient-to-b from-category-titleTwist to-primary-special',
     },
   },
 });

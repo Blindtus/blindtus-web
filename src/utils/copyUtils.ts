@@ -16,6 +16,7 @@ const CATEGORIES: { [key: string]: string } = {
   pixelus: '🏙️',
   castus: '😶',
   hotDate: '🔥',
+  titleTwist: '🌪️',
 };
 
 const createHeader = () => {
@@ -58,8 +59,9 @@ export const copyToClipboardTodayHistoryGamnes = (todayId: string) => {
   const pixelus = createCategory(history.pixelus, 'pixelus', 5);
   const castus = createCategory(history.castus, 'castus', 5);
   const hotDate = createCategory(history.hotDate, 'hotDate');
+  const titleTwist = createCategory(history.titleTwist, 'titleTwist', 5);
 
-  let content = `${header}\n\n${blindtus}\n${pixelus}\n${castus}\n${hotDate}`;
+  let content = `${header}\n\n${blindtus}\n${pixelus}\n${castus}\n${hotDate}\n${titleTwist}`;
 
   const hostname = window.location.href;
 

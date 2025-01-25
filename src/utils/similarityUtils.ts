@@ -15,11 +15,14 @@ export type SimilarityStatusType = (typeof similarityStatus)[keyof typeof simila
 const SCORE_CORRECT = 0.85;
 const SCORE_ALMOST = 0.7;
 
+const SCORE_CORRECT_EXACT = 0.9;
+
 const lcs = stringComparison.lcs;
 
 const checkSimilarityBetweenTwoStrings = (
   stringToCheck: string,
   sample: string,
+  exact = false,
 ): SimilarityStatusType => {
   const formatedStringToCheck = normalize(stringToCheck);
   const formatedSample = normalize(sample);
@@ -31,7 +34,10 @@ const checkSimilarityBetweenTwoStrings = (
     status = similarityStatus.ALMOST;
   }
 
-  if (similarityScore >= SCORE_CORRECT) {
+  if (
+    (!exact && similarityScore >= SCORE_CORRECT) ||
+    (exact && similarityScore >= SCORE_CORRECT_EXACT)
+  ) {
     status = similarityStatus.CORRECT;
   }
 
@@ -41,12 +47,15 @@ const checkSimilarityBetweenTwoStrings = (
 export const checkSimilarity = (
   stringToCheck: string,
   samples: Array<string> | string,
+  exact = false,
 ): SimilarityStatusType => {
   if (typeof samples === 'string') {
     return checkSimilarityBetweenTwoStrings(stringToCheck, samples);
   }
 
-  const results = samples.map((sample) => checkSimilarityBetweenTwoStrings(stringToCheck, sample));
+  const results = samples.map((sample) =>
+    checkSimilarityBetweenTwoStrings(stringToCheck, sample, exact),
+  );
 
   if (results.includes(similarityStatus.CORRECT)) {
     return similarityStatus.CORRECT;

@@ -41,7 +41,7 @@ type TodayGameContextType = {
   pixelus?: PixelatedImage;
   category?: Category;
   gameType?: GameType;
-  checkAnswer?: (_answer: string) => SimilarityStatusType;
+  checkAnswer?: (_answer: string, exact?: boolean) => SimilarityStatusType;
   checkReleaseDate?: (_answer: string) => TemperatureType;
 };
 
@@ -170,11 +170,11 @@ export const TodayGameProvider = ({ children, gameType }: TodayGameProviderProps
   );
 
   const checkAnswer = useCallback(
-    (answer: string) => {
+    (answer: string, exact = false) => {
       setAnswers((prev) => [...prev, answer]);
 
       const correctAnswer = [titles.en, titles.fr, ...(media?.simpleTitles ?? [])];
-      const status = checkSimilarity(answer, correctAnswer);
+      const status = checkSimilarity(answer, correctAnswer, exact);
 
       const statusCorrect = status === similarityStatus.CORRECT;
 

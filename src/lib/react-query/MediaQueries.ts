@@ -13,6 +13,7 @@ import {
   getMediaIds,
   getMediaMusics,
   getMediaPixelatedImages,
+  regenerateScrambleTitles,
   updateMedia,
 } from '../api/media';
 import { QUERY_KEYS } from './queryKeys';
@@ -164,6 +165,58 @@ export const useCrawlMedia = () => {
       });
     },
     () => [QUERY_KEYS.MEDIAS_ALL],
+  );
+};
+
+export const useGenerateScramble = () => {
+  const queryClient = useQueryClient();
+
+  return useGenericMutation<string, QueryResponse<Media>>(
+    regenerateScrambleTitles,
+    (response, mediaId) => {
+      const originalData = queryClient.getQueryData<Media>([QUERY_KEYS.MEDIAS_BY_ID, mediaId]);
+
+      if (originalData) {
+        queryClient.setQueryData([QUERY_KEYS.MEDIAS_BY_ID, mediaId], {
+          ...originalData,
+          ...response.data,
+        });
+      }
+
+      const mediasDatas = queryClient.getQueriesData<QueryResponse<Media[]>>({
+        queryKey: [QUERY_KEYS.MEDIAS_ALL],
+      });
+
+      mediasDatas.forEach((mediasData) => {
+        if (!mediasData) {
+          return;
+        }
+
+        const datas = mediasData[1]?.data || [];
+
+        if (!datas) {
+          return;
+        }
+
+        // update the media in the list
+        const updatedMedias = datas.map((data) => {
+          if (data._id === mediaId) {
+            return {
+              ...data,
+              ...response.data,
+            };
+          }
+
+          return data;
+        });
+
+        queryClient.setQueryData(mediasData[0], {
+          ...mediasData[1],
+          data: updatedMedias,
+        });
+      });
+    },
+    () => [],
   );
 };
 

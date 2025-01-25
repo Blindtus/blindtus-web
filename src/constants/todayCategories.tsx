@@ -1,4 +1,4 @@
-import { BookImage, CalendarSearch, Music, User2 } from 'lucide-react';
+import { BookImage, CalendarSearch, Music, ShuffleIcon, User2 } from 'lucide-react';
 
 import type { GameType } from '@/types/today.type';
 
@@ -48,5 +48,15 @@ export const TODAY_CATEGORIES: Array<{
     slug: 'hotDate',
     icon: <CalendarSearch />,
     game: 'hotDate',
+  },
+  {
+    id: 'titleTwist',
+    label: {
+      en: 'Title Twist',
+      fr: 'Title Twist',
+    },
+    slug: 'titleTwist',
+    icon: <ShuffleIcon />,
+    game: 'titleTwist',
   },
 ];

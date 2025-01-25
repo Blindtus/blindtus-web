@@ -52,6 +52,10 @@ export type Media = {
   forcePropositions: Media[];
   lastTimeCrawled: Date;
   similar?: Media[];
+  scrambledTitles: {
+    en: string[];
+    fr: string[];
+  };
 };
 
 export const MediaStatus = Object.freeze({
