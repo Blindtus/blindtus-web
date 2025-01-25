@@ -70,7 +70,7 @@ export const generateTodayGame = async () => {
 
 export const regenerateTodayGame = async (
   todayId: string,
-  { blindtus = false, pixelus = false, castus = false, hotDate = false },
+  { blindtus = false, pixelus = false, castus = false, hotDate = false, titleTwist = false },
 ) => {
   try {
     const response: QueryResponse<Today> = await callApi({
@@ -81,6 +81,7 @@ export const regenerateTodayGame = async (
         pixelus,
         castus,
         hotDate,
+        titleTwist,
       },
     });
 

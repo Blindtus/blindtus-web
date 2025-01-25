@@ -36,6 +36,7 @@ import TodayGameAudio from './TodayGameAudio';
 import TodayGameCastus from './TodayGameCastus';
 import TodayGameHotDate from './TodayGameHotDate';
 import TodayGamePixelus from './TodayGamePixelus';
+import TodayGameTitleTwist from './TodayGameTitleTwist';
 
 const STEPS = [0, 1, 2, 3, 4];
 
@@ -56,6 +57,8 @@ const TodayGame = () => {
         return <TodayGameCastus />;
       case 'hotDate':
         return <TodayGameHotDate />;
+      case 'titleTwist':
+        return <TodayGameTitleTwist />;
       default:
         return null;
     }

@@ -59,15 +59,17 @@ export const useRegenerateTodayGame = () => {
       pixelus?: boolean;
       castus?: boolean;
       hotDate?: boolean;
+      titleTwist?: boolean;
     },
     QueryResponse<Today>
   >(
-    ({ todayId, blindtus, pixelus, castus, hotDate }) =>
+    ({ todayId, blindtus, pixelus, castus, hotDate, titleTwist }) =>
       regenerateTodayGame(todayId, {
         blindtus,
         pixelus,
         castus,
         hotDate,
+        titleTwist,
       }),
     (response, { todayId }) => {
       const originalData = queryClient.getQueryData<Today[]>([QUERY_KEYS.TODAY_BY_ID, todayId]);

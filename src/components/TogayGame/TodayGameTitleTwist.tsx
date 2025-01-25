@@ -1,24 +1,30 @@
+'use client';
+
 import { useCallback, useMemo, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import JSConfetti from 'js-confetti';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import MediaPoster from '@/components/Poster/MediaPoster';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useTodayGame } from '@/context/TodayGameContext';
 import useViewport from '@/hooks/use-viewport';
 import { TodayGameValidation } from '@/lib/validations/today';
-import { temperatureTypes } from '@/utils/similarityUtils';
+import { type SimilarityStatusType, similarityStatus } from '@/utils/similarityUtils';
 
-const TodayGameHotDate = () => {
+import Loader from '../Loader';
+import TodayGameStatus from './TodayGameStatus';
+
+const TodayGameTitleTwist = () => {
   const __ = useTranslations();
+  const locale = useLocale() as 'en' | 'fr';
+  const [status, setStatus] = useState<SimilarityStatusType | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
-  const { checkReleaseDate, media } = useTodayGame();
+  const { currentStep, checkAnswer, isLoading, media } = useTodayGame();
   const { isXs } = useViewport();
 
   const form = useForm<z.infer<typeof TodayGameValidation>>({
@@ -33,9 +39,10 @@ const TodayGameHotDate = () => {
   const onSubmit = useCallback(
     async (data: z.infer<typeof TodayGameValidation>) => {
       try {
-        const answerStatus = checkReleaseDate?.(data.answer) || temperatureTypes.COLD;
-        const isCorrect = answerStatus === temperatureTypes.CORRECT;
+        const answerStatus = checkAnswer?.(data.answer, true) || similarityStatus.WRONG;
+        const isCorrect = answerStatus === similarityStatus.CORRECT;
         setIsAnswerCorrect(isCorrect);
+        setStatus(answerStatus);
         form.reset();
 
         if (isCorrect) {
@@ -55,13 +62,32 @@ const TodayGameHotDate = () => {
         console.error(error);
       }
     },
-    [checkReleaseDate, form],
+    [checkAnswer, form],
   );
 
-  const buttonLabel = useMemo(
-    () => (isXs ? __('!noun:send') : __('!noun:send-answer')),
-    [__, isXs],
-  );
+  const buttonLabel = useMemo(() => {
+    if (watchAnswer !== '') {
+      return isXs ? __('!noun:send') : __('!noun:send-answer');
+    }
+
+    return __('!noun:skip');
+  }, [__, isXs, watchAnswer]);
+
+  const showScrambledTitles = useMemo(() => {
+    const titles: string[] = [];
+
+    for (let i = 0; i < currentStep + 1; i++) {
+      if (media?.scrambledTitles[locale][i]) {
+        titles.push(media.scrambledTitles[locale][i]);
+      }
+    }
+
+    return titles;
+  }, [currentStep, locale, media?.scrambledTitles]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -73,29 +99,29 @@ const TodayGameHotDate = () => {
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormControl>
-                  <Input
-                    type="number"
-                    min={1900}
-                    {...field}
-                    isWiggle={isAnswerCorrect === false}
-                    placeholder="1994"
-                  />
+                  <Input {...field} isWiggle={isAnswerCorrect === false} />
                 </FormControl>
               </FormItem>
             )}
           />
 
-          <Button type="submit" variant="primary" disabled={!watchAnswer}>
+          <Button type="submit" variant="primary">
             {buttonLabel}
           </Button>
         </form>
       </Form>
 
-      <div className="w-full max-w-full md:w-96">
-        <MediaPoster title="Find the media" posterPath={media?.selectedPoster} size="medium" />
+      {status ? <TodayGameStatus status={status} /> : null}
+
+      <div className="flex flex-col gap-4">
+        {showScrambledTitles.map((title, index) => (
+          <div key={index} className="text-4xl">
+            <strong>{index + 1}.</strong> {title}
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default TodayGameHotDate;
+export default TodayGameTitleTwist;

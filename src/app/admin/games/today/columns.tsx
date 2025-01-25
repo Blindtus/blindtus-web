@@ -91,6 +91,18 @@ export const columns: ColumnDef<Today>[] = [
     },
   },
   {
+    accessorKey: 'shuffleUp',
+    header: 'ShuffleUp',
+    cell: ({ row }) => {
+      const scramblus: Media = row.getValue('scramblus');
+      return (
+        <Badge variant={scramblus ? 'default' : 'destructive'}>
+          {scramblus ? 'OK' : 'Not created'}
+        </Badge>
+      );
+    },
+  },
+  {
     id: 'actions',
     cell: ({ row }) => {
       return <ActionCell row={row} />;

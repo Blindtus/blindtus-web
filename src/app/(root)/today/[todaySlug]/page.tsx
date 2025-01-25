@@ -75,6 +75,18 @@ export async function generateMetadata({ params }: TodayPageProps): Promise<Meta
           'Savez-vous quand vos films préférés sont sortis ? Dans Hot Date, devinez la date de sortie d’un film et voyez à quel point vous êtes proche de la bonne réponse. Plus vous vous rapprochez, plus la date est chaude !',
       },
     },
+    titleTwist: {
+      en: {
+        title: 'Title Twist - Guess the Movie or TV Show from twisted Titles',
+        description:
+          'In Title Twist, we’ve twisted the titles of your favorite movies and TV shows. Can you untwist them and guess the original titles?',
+      },
+      fr: {
+        title: 'Title Twist - Devinez le Film ou la Série à Partir de Titres Tordus',
+        description:
+          'Dans Title Twist, nous avons mélangé les titres de vos films et séries préférés. Saurez-vous les décrypter et retrouver les titres originaux ?',
+      },
+    },
   };
 
   const { title, description } =
@@ -103,7 +115,7 @@ const TodayPage = async ({ params }: TodayPageProps) => {
         <h1 className="page-title--no-spacing">{label}</h1>
         <TodayGameRules
           className="ml-4"
-          type={todaySlug as 'blindtus' | 'pixelus' | 'castus' | 'hotDate'}
+          type={todaySlug as 'blindtus' | 'pixelus' | 'castus' | 'hotDate' | 'titleTwist'}
         />
       </div>
       <Suspense fallback={<Loader />}>

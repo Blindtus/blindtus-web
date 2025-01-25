@@ -2,13 +2,14 @@ import type { Music } from './audio.type';
 import type { Media } from './media.type';
 import type { PixelatedImage } from './pixelatedImage.type';
 
-export type GameType = 'blindtus' | 'pixelus' | 'castus' | 'hotDate';
+export type GameType = 'blindtus' | 'pixelus' | 'castus' | 'hotDate' | 'titleTwist';
 
 export const GameTypes = Object.freeze({
   BLINDTUS: 'blindtus' as GameType,
   PIXELUS: 'pixelus' as GameType,
   CASTUS: 'castus' as GameType,
   HOT_DATE: 'hotDate' as GameType,
+  TITLE_TWIST: 'titleTwist' as GameType,
 });
 
 export type Today = {
@@ -17,6 +18,7 @@ export type Today = {
   pixelus?: PixelatedImage;
   castus?: Media;
   hotDate?: Media;
+  titleTwist?: Media;
   createdAt: Date;
 };
 
