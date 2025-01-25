@@ -181,3 +181,21 @@ export const getMediaPixelatedImages = async (mediaId: string) => {
     return null;
   }
 };
+
+export const regenerateScrambleTitles = async (mediaId: string) => {
+  try {
+    const response: QueryResponse<Media> = await callApi({
+      endpoint: `/admin/media/${mediaId}/scramble`,
+      method: 'POST',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Failed to scramble media', error);
+    return {
+      error: {
+        message: 'Failed to scramble media',
+      },
+    };
+  }
+};

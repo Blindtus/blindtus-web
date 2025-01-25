@@ -255,6 +255,18 @@ const translations = {
   "!text:today-rules-pixelus-title": [
     null,
     "Find the Movie or TV Show by its pixelated poster"
+  ],
+  "!text:today-rules-titletwist-progression": [
+    null,
+    "At each step, the title becomes easier to decipher. As you progress, the letters move closer to their original positions."
+  ],
+  "!text:today-rules-titletwist-result": [
+    null,
+    "It is not necessary to put all the letters in the correct order, only the correct answer counts!"
+  ],
+  "!text:today-rules-titletwist-title": [
+    null,
+    "Find the Movie or TV Show by its twisted title"
   ]
 }
 };

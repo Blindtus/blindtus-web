@@ -55,6 +55,7 @@ const TodayDetail = ({ todayId }: TodayDetailProps) => {
         <TodayDetailItem todayId={todayId} todayItem={today.pixelus} category="pixelus" />
         <TodayDetailItem todayId={todayId} todayItem={today.castus} category="castus" />
         <TodayDetailItem todayId={todayId} todayItem={today.hotDate} category="hotDate" />
+        <TodayDetailItem todayId={todayId} todayItem={today.titleTwist} category="titleTwist" />
       </div>
     </div>
   );

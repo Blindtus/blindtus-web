@@ -6,17 +6,18 @@ import { DialogTrigger } from '@radix-ui/react-dialog';
 import { HelpCircleIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import TodayBlindtusRules from '@/components/Modal/TodayBlindtusRules';
+import TodayCastusRules from '@/components/Modal/TodayCastusRules';
+import TodayHotDateRules from '@/components/Modal/TodayHotDateRules';
+import TodayPixelusRules from '@/components/Modal/TodayPixelusRules';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
-import TodayBlindtusRules from '../Modal/TodayBlindtusRules';
-import TodayCastusRules from '../Modal/TodayCastusRules';
-import TodayHotDateRules from '../Modal/TodayHotDateRules';
-import TodayPixelusRules from '../Modal/TodayPixelusRules';
+import TodayTitleTwistRules from '../Modal/TodayTitleTwistRules';
 
 type Props = {
-  type: 'blindtus' | 'pixelus' | 'castus' | 'hotDate';
+  type: 'blindtus' | 'pixelus' | 'castus' | 'hotDate' | 'titleTwist';
   className?: string;
 };
 
@@ -34,6 +35,8 @@ const TodayGameRules = ({ className, type }: Props) => {
         return <TodayCastusRules />;
       case 'hotDate':
         return <TodayHotDateRules />;
+      case 'titleTwist':
+        return <TodayTitleTwistRules />;
       default:
         return null;
     }

@@ -13,8 +13,10 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import useViewport from '@/hooks/use-viewport';
 import {
+  useGenerateScramble,
   useGetMedia,
   useGetMediaPixelatedImages,
   useUpdateMedia,
@@ -34,6 +36,7 @@ const MediaDetailContent = ({ mediaId }: MediaDetailContentProps) => {
   const { data: pixelatedImages, isFetching: isPixelatedImagesFetching } =
     useGetMediaPixelatedImages(mediaId);
   const { mutate: updateMedia } = useUpdateMedia();
+  const { mutate: updateScrambleTitles, isPending } = useGenerateScramble();
   const [casts, setCasts] = useState<Array<Cast>>(media?.casts || []);
 
   const handleSetSelectedPoster = useCallback(
@@ -113,6 +116,14 @@ const MediaDetailContent = ({ mediaId }: MediaDetailContentProps) => {
       });
     },
     [mediaId, updateMedia],
+  );
+
+  const handleScrambleTitles = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      updateScrambleTitles(mediaId);
+    },
+    [updateScrambleTitles, mediaId],
   );
 
   if (isMediaFetching) {
@@ -217,6 +228,26 @@ const MediaDetailContent = ({ mediaId }: MediaDetailContentProps) => {
               ) : (
                 <Loader />
               )}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="scrambledTitles">
+          <AccordionTrigger>
+            <span className="flex items-center gap-4">Scrambled titles</span>
+          </AccordionTrigger>
+          <AccordionContent className="p-2">
+            <Button onClick={handleScrambleTitles} disabled={isPending}>
+              Re-generate
+            </Button>
+            <div className="flex flex-col gap-4">
+              <h2>EN</h2>
+              <ol className="list-decimal pl-5">
+                {media.scrambledTitles?.en.map((title) => <li key={title}>{title}</li>)}
+              </ol>
+              <h2>FR</h2>
+              <ol className="list-decimal pl-5">
+                {media.scrambledTitles?.fr.map((title) => <li key={title}>{title}</li>)}
+              </ol>
             </div>
           </AccordionContent>
         </AccordionItem>
