@@ -72,7 +72,7 @@ export async function middleware(request: NextRequest) {
       const data = await getRefreshToken(token?.value || '', refreshToken?.value || '');
 
       if (data.error) {
-        throw new Error(data.error.message);
+        return NextResponse.redirect(new URL('/', request.nextUrl));
       }
 
       if (data.accessToken) {
