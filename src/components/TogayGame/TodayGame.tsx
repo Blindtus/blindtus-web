@@ -64,6 +64,9 @@ const TodayGame = () => {
     }
   }, [gameType]);
 
+  const isBlindtus = useMemo(() => gameType === GameTypes.BLINDTUS, [gameType]);
+  const isHotDate = useMemo(() => gameType === GameTypes.HOT_DATE, [gameType]);
+
   const renderNextCategory = useCallback(() => {
     if (!isCompleted) {
       return null;
@@ -102,18 +105,18 @@ const TodayGame = () => {
       return null;
     }
 
-    if (gameType === GameTypes.HOT_DATE) {
+    if (isHotDate) {
       return __('!text:lookingForReleaseDateMovie');
       // return 'the release date of the movie';
     }
 
     return `${__('!text:lookingForMediaType')} ${__(`!noun:${category?.type}`)}`;
-  }, [__, category, gameType]);
+  }, [__, category, isHotDate]);
 
   const lastAnswer = useMemo(() => {
     const answer = answers.findLast((answer) => answer);
 
-    if (gameType === GameTypes.HOT_DATE) {
+    if (isHotDate) {
       const temperature =
         answer && media?.releaseDate !== undefined
           ? evaluateNumber(media.releaseDate, Number(answer))
@@ -135,7 +138,7 @@ const TodayGame = () => {
     }
 
     return answer;
-  }, [answers, gameType, media?.releaseDate]);
+  }, [answers, isHotDate, media?.releaseDate]);
 
   return (
     <AudioContextProvider>
@@ -147,7 +150,9 @@ const TodayGame = () => {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-8 gap-8">
             <div className="col-span-8 flex flex-col gap-4 sm:col-span-5 xl:col-span-6">
-              <Steps steps={STEPS} active={currentStep} isCorrect={isCorrect} />
+              {!isHotDate ? (
+                <Steps steps={STEPS} active={currentStep} isCorrect={isCorrect} />
+              ) : null}
               {!isCompleted ? (
                 renderGame()
               ) : (
@@ -156,7 +161,7 @@ const TodayGame = () => {
                 </div>
               )}
 
-              {!isCompleted && media && gameType === 'blindtus' ? (
+              {!isCompleted && media && isBlindtus ? (
                 <Clues
                   media={media}
                   mediaType={category?.slug as LocalMediaType}
@@ -166,8 +171,8 @@ const TodayGame = () => {
             </div>
 
             <div className="hidden flex-col gap-8 sm:col-span-3 sm:flex xl:col-span-2">
-              {gameType === GameTypes.BLINDTUS ? <VolumeSlider className="-mt-8" /> : null}
-              {gameType === GameTypes.HOT_DATE ? (
+              {isBlindtus ? <VolumeSlider className="-mt-8" /> : null}
+              {isHotDate ? (
                 <ListAnswerTemperature answers={answers} refAnswer={media?.releaseDate} />
               ) : (
                 <ListAnswer answers={answers} isCorrect={isCorrect} />
