@@ -1,6 +1,7 @@
 import { QueryResponse } from '@/types/query.type';
 import { Today } from '@/types/today.type';
 import { callApi } from '@/utils/apiUtils';
+import { decryptData } from '@/utils/datasUtils';
 
 export const getAllToday = async ({ skip, limit }: { skip: number; limit: number }) => {
   try {
@@ -30,7 +31,8 @@ export const getToday = async () => {
       return null;
     }
 
-    return response.data;
+    const datas = decryptData(response.data as unknown as string);
+    return JSON.parse(datas);
   } catch (error) {
     console.error('Failed to fetch today', error);
     return null;

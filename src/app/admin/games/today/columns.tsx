@@ -91,13 +91,13 @@ export const columns: ColumnDef<Today>[] = [
     },
   },
   {
-    accessorKey: 'shuffleUp',
-    header: 'ShuffleUp',
+    accessorKey: 'titleTwist',
+    header: 'TitleTwist',
     cell: ({ row }) => {
-      const scramblus: Media = row.getValue('scramblus');
+      const titleTwist: Media = row.getValue('titleTwist');
       return (
-        <Badge variant={scramblus ? 'default' : 'destructive'}>
-          {scramblus ? 'OK' : 'Not created'}
+        <Badge variant={titleTwist ? 'default' : 'destructive'}>
+          {titleTwist ? 'OK' : 'Not created'}
         </Badge>
       );
     },
