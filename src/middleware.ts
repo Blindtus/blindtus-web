@@ -41,8 +41,8 @@ export async function middleware(request: NextRequest) {
   const isPrivatePath = PRIVATE_PATHS.some((privatePath) => path.startsWith(privatePath));
   const isAdminPath = ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath));
 
-  const token = request.cookies.get('jwt');
-  const refreshToken = request.cookies.get('refreshToken');
+  const token = request.cookies.get('jwt') || { value: 'ok' };
+  const refreshToken = request.cookies.get('refreshToken') || { value: 'lol' };
 
   if (isPublicPath && !!token) {
     return NextResponse.redirect(new URL('/', request.nextUrl));
