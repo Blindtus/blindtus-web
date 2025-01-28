@@ -7,27 +7,27 @@ const PUBLIC_PATHS = ['/sign-in', '/sign-up', '/recovery', '/forgot-password'];
 const PRIVATE_PATHS = ['/user'];
 const ADMIN_PATHS = ['/admin'];
 
-const getUser = async (token: string, refreshToken: string) => {
+const getUser = async () => {
   const response = await fetch(`${API}/user/me`, {
     mode: 'cors',
     credentials: 'include',
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
-      cookie: `jwt=${token}; refreshToken=${refreshToken}`,
+      // cookie: `jwt=${token}; refreshToken=${refreshToken}`,
     },
   });
 
   return await response.json();
 };
 
-const getRefreshToken = async (token: string, refreshToken: string) => {
+const getRefreshToken = async () => {
   const response = await fetch(`${API}/user/refresh`, {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
-      cookie: `jwt=${token}; refreshToken=${refreshToken}`,
+      // cookie: `jwt=${token}; refreshToken=${refreshToken}`,
     },
   });
 
@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
   const isAdminPath = ADMIN_PATHS.some((adminPath) => path.startsWith(adminPath));
 
   const token = request.cookies.get('jwt');
-  const refreshToken = request.cookies.get('refreshToken');
+  // const refreshToken = request.cookies.get('refreshToken');
 
   if (isPublicPath && !!token) {
     return NextResponse.redirect(new URL('/', request.nextUrl));
@@ -59,7 +59,7 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminPath) {
     try {
-      const user = await getUser(token?.value || '', refreshToken?.value || '');
+      const user = await getUser();
 
       if (user.error) {
         throw new Error(user.error.message);
@@ -69,14 +69,14 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.nextUrl));
       }
     } catch {
-      const data = await getRefreshToken(token?.value || '', refreshToken?.value || '');
+      const data = await getRefreshToken();
 
       if (data.error) {
         return NextResponse.redirect(new URL('/', request.nextUrl));
       }
 
       if (data.accessToken) {
-        const user = await getUser(data.accessToken, data.refreshToken);
+        const user = await getUser();
 
         if (user.error) {
           throw new Error(data.error.message);
