@@ -43,7 +43,10 @@ const LocaleSelect = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary">
-          <Globe size={16} className="mr-2" /> {currentLocale === 'fr' ? 'Français' : 'English'}
+          <Globe size={16} />{' '}
+          <span className="ml-2 hidden md:block">
+            {currentLocale === 'fr' ? 'Français' : 'English'}
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

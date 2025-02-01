@@ -1,4 +1,8 @@
-import React from 'react';
+'use client';
+
+import React, { useMemo } from 'react';
+
+import { useLocale } from 'next-intl';
 
 import MediaButtonAction from '@/components/Admin/MediaButtonAction/MediaButtonAction';
 import MediaPoster from '@/components/Poster/MediaPoster';
@@ -11,15 +15,22 @@ type MediaCardSearchProps = {
 };
 
 const MediaCardSearch = ({ media, showActions = false, categoryId }: MediaCardSearchProps) => {
+  const locale = useLocale() as 'en' | 'fr';
+
+  const title = useMemo(
+    () => media.title?.[locale] || media.title?.en || media.title?.fr,
+    [locale, media.title],
+  );
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex w-full gap-6 py-6">
         <div className="w-24">
-          <MediaPoster title={media.title} posterPath={media.poster_path} />
+          <MediaPoster title={title} posterPath={media.poster_path} />
         </div>
 
         <div className="flex-1 space-y-1.5">
-          <h2 className="text-lg font-semibold">{media.title}</h2>
+          <h2 className="text-lg font-semibold">{title}</h2>
           <p className="text-sm text-gray-500">{media.release_date?.slice(0, 4)}</p>
         </div>
 

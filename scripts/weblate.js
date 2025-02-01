@@ -11,7 +11,7 @@ const config = {
   weblateProject: 'blindtus',
   weblateComponent: 'web',
   supportedLanguages: ['en', 'fr'],
-  translationFunction: ['__', '__.rich'],
+  translationFunction: ['__'],
   sourceDirectory: 'src',
   localesDirectory: 'src/locales',
   temporaryDirectory: 'locales_tmp',

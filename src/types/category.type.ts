@@ -30,3 +30,10 @@ export const LocalMediaTypes = Object.freeze({
 type LocalMediaKeys = keyof typeof LocalMediaTypes;
 
 export type LocalMediaType = (typeof LocalMediaTypes)[LocalMediaKeys];
+
+export const MediaTypes = Object.freeze({
+  MOVIE: 'movie',
+  TV: 'tv',
+});
+
+export type MediaType = (typeof MediaTypes)[keyof typeof MediaTypes];

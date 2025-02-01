@@ -57,3 +57,21 @@ export const getPopularMedias = async ({
     return null;
   }
 };
+
+export const getSearchedMediasSuggest = async ({ query }: { query: string }) => {
+  try {
+    const queryParams = new URLSearchParams({
+      query,
+    });
+
+    const response: QueryResponse<TMDBSearchMedia[]> = await callApi({
+      endpoint: `/tmdb/suggest/search?${queryParams.toString()}`,
+      method: 'GET',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch searched medias', error);
+    return null;
+  }
+};

@@ -1,6 +1,7 @@
 import { useGenericQuery } from '@/hooks/use-generic-query';
+import { type MediaType } from '@/types/category.type';
 
-import { getPopularMedias, getSearchedMedias } from '../api/tmdb';
+import { getPopularMedias, getSearchedMedias, getSearchedMediasSuggest } from '../api/tmdb';
 import { QUERY_KEYS } from './queryKeys';
 
 export const useGetSearchedMedias = ({
@@ -9,7 +10,7 @@ export const useGetSearchedMedias = ({
   page = 1,
 }: {
   query: string;
-  type: 'movie' | 'tv';
+  type: MediaType;
   page?: number;
 }) => {
   const queryKey = [QUERY_KEYS.TMDB_SEARCH, query, type, page];
@@ -46,6 +47,21 @@ export const useGetPopularMedias = ({
         type,
         page,
         sortBy,
+      }),
+    {
+      enabled: false,
+    },
+  );
+};
+
+export const useGetSearchedMediasSuggest = ({ query }: { query: string }) => {
+  const queryKey = [QUERY_KEYS.TMDB_SEARCH, query];
+
+  return useGenericQuery(
+    queryKey,
+    () =>
+      getSearchedMediasSuggest({
+        query,
       }),
     {
       enabled: false,
