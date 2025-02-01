@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useUserContext } from '@/context/AuthContext';
 
 import LocaleSelect from '../LocaleSelect';
+import SuggestLink from '../SuggestLink/SuggestLink';
 
 const Header = () => {
   const { isAdmin, logout } = useUserContext();
@@ -49,6 +50,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex h-12 items-center justify-center gap-2">
+          <SuggestLink />
           <LocaleSelect />
           {renderActions}
         </div>

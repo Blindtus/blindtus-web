@@ -6,6 +6,7 @@ import { QueryResponse } from '@/types/query.type';
 
 import {
   addMedia,
+  addMediaSuggest,
   crawlMedia,
   deleteMedia,
   getAllMedias,
@@ -80,6 +81,20 @@ export const useAddMedia = () => {
     QueryResponse<Media>
   >(
     ({ mediaId, categoryId }) => addMedia(mediaId, categoryId),
+    () => {},
+    () => [QUERY_KEYS.MEDIAS_ALL_IDS, QUERY_KEYS.MEDIAS_ALL],
+  );
+};
+
+export const useAddMediaSuggest = () => {
+  return useGenericMutation<
+    {
+      mediaId: string;
+      mediaType: string;
+    },
+    QueryResponse<Media>
+  >(
+    ({ mediaId, mediaType }) => addMediaSuggest(mediaId, mediaType),
     () => {},
     () => [QUERY_KEYS.MEDIAS_ALL_IDS, QUERY_KEYS.MEDIAS_ALL],
   );

@@ -101,6 +101,28 @@ export const addMedia = async (tmdbId: string, categoryId: string) => {
   }
 };
 
+export const addMediaSuggest = async (tmdbId: string, mediaType: string) => {
+  try {
+    const response: QueryResponse<Media> = await callApi({
+      endpoint: '/media/suggest',
+      method: 'POST',
+      data: {
+        mediaId: tmdbId,
+        mediaType,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Failed to create media', error);
+    return {
+      error: {
+        message: 'Failed to create media',
+      },
+    };
+  }
+};
+
 export const updateMedia = async (mediaId: string, media: Partial<Media>) => {
   try {
     const response: QueryResponse<Media> = await callApi({

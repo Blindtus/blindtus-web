@@ -92,9 +92,17 @@ const translations = {
     null,
     "Skip"
   ],
+  "!noun:suggest": [
+    null,
+    "Suggest media"
+  ],
   "!noun:terms": [
     null,
     "Terms of Use"
+  ],
+  "!noun:title": [
+    null,
+    "Title"
   ],
   "!noun:tv": [
     null,
@@ -103,6 +111,14 @@ const translations = {
   "!noun:your-answers": [
     null,
     "Your answers"
+  ],
+  "!nount:add": [
+    null,
+    "Add"
+  ],
+  "!nount:added": [
+    null,
+    "Added"
   ],
   "!text:alert-come-back": [
     null,
@@ -176,9 +192,21 @@ const translations = {
     null,
     "Go to the {category} game"
   ],
+  "!text:search": [
+    null,
+    "Search"
+  ],
   "!text:signin-title": [
     null,
     "Log in to your account"
+  ],
+  "!text:suggest-description": [
+    null,
+    "Got a movie or TV show in mind that deserves a spot in our game? Share your favorites and help expand the challenge!"
+  ],
+  "!text:suggest-title": [
+    null,
+    "Lights, Camera… Suggest!"
   ],
   "!text:today-game-title": [
     null,

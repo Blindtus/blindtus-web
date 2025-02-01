@@ -91,6 +91,10 @@
     @apply autofill-text;
   }
 
+  .input--lg {
+    @apply h-14;
+  }
+
   .input--sm {
     @apply h-10;
   }
