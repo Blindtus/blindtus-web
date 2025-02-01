@@ -1,4 +1,12 @@
-import { Calendar, LayoutDashboard, List, type LucideIcon, Music, Settings } from 'lucide-react';
+import {
+  CalendarIcon,
+  LayoutDashboardIcon,
+  ListIcon,
+  type LucideIcon,
+  MapIcon,
+  MusicIcon,
+  SettingsIcon,
+} from 'lucide-react';
 
 import type { Category } from '@/types/category.type';
 
@@ -31,7 +39,7 @@ export const getMenuList = (pathname: string, categories: Category[] | undefined
           href: '/admin',
           label: 'Dashboard',
           active: pathname.endsWith('/admin'),
-          icon: LayoutDashboard,
+          icon: LayoutDashboardIcon,
           submenus: [],
         },
       ],
@@ -43,7 +51,7 @@ export const getMenuList = (pathname: string, categories: Category[] | undefined
           href: '/admin/games/today',
           label: 'Today',
           active: pathname.includes('/today'),
-          icon: Calendar,
+          icon: CalendarIcon,
           submenus: [],
         },
       ],
@@ -55,14 +63,14 @@ export const getMenuList = (pathname: string, categories: Category[] | undefined
           href: '/admin/medias/types',
           label: 'Media types',
           active: pathname.includes('/types'),
-          icon: List,
+          icon: ListIcon,
           submenus: [],
         },
         {
           href: '',
           label: 'Categories',
           active: pathname.includes('/medias') && !pathname.includes('/types'),
-          icon: List,
+          icon: ListIcon,
           submenus:
             categories?.map(({ label, slug }) => ({
               href: `/admin/medias/${slug}`,
@@ -79,7 +87,19 @@ export const getMenuList = (pathname: string, categories: Category[] | undefined
           href: '/admin/musics',
           label: 'Musics',
           active: pathname.includes('/musics'),
-          icon: Music,
+          icon: MusicIcon,
+          submenus: [],
+        },
+      ],
+    },
+    {
+      groupLabel: '',
+      menus: [
+        {
+          href: '/admin/roadmap',
+          label: 'Roadmap',
+          active: pathname.includes('/roadmap'),
+          icon: MapIcon,
           submenus: [],
         },
       ],
@@ -91,7 +111,7 @@ export const getMenuList = (pathname: string, categories: Category[] | undefined
           href: '/admin/settings',
           label: 'Settings',
           active: pathname.includes('/settings'),
-          icon: Settings,
+          icon: SettingsIcon,
           submenus: [],
         },
       ],

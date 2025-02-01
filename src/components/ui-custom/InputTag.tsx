@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { X } from 'lucide-react';
 
@@ -16,69 +16,78 @@ type InputTagProps = {
 };
 
 const InputTag = ({ tags = [], onChange, placeholder = 'Enter tag' }: InputTagProps) => {
-  const [allTags, setAllTags] = React.useState<Tag[]>(
+  const [allTags, setAllTags] = useState<Tag[]>(
     tags.map((tag, index) => ({
       id: Date.now() + index,
       text: tag,
     })),
   );
+  const [inputValue, setInputValue] = useState('');
 
-  const handleAddTag = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const input = e.currentTarget.querySelector('input');
-      if (!input) {
-        return;
-      }
+  const handleAddTag = useCallback(() => {
+    const tagText = inputValue.trim();
 
-      const tagText = input.value.trim();
+    if (!tagText) return;
 
-      if (!tagText) {
-        return;
-      }
+    // Check for duplicates (case-insensitive)
+    const isDuplicate = allTags.some((tag) => tag.text.toLowerCase() === tagText.toLowerCase());
+    if (isDuplicate) {
+      setInputValue(''); // Clear input if duplicate
+      return;
+    }
 
-      const newTag = {
-        id: Date.now(),
-        text: tagText,
-      };
+    const newTag = { id: Date.now(), text: tagText };
 
-      setAllTags((prevTags) => [...prevTags, newTag]);
-      onChange([...allTags.map((tag) => tag.text), tagText]);
-      input.value = '';
-    },
-    [allTags, onChange],
-  );
+    setAllTags((prevTags) => {
+      const updatedTags = [...prevTags, newTag];
+      onChange(updatedTags.map((tag) => tag.text));
+      return updatedTags;
+    });
+
+    setInputValue(''); // Clear input after adding tag
+  }, [inputValue, allTags, onChange]);
 
   const handleRemoveTag = useCallback(
     (tagId: number) => {
-      setAllTags((prevTags) => prevTags.filter((tag) => tag.id !== tagId));
-      onChange(allTags.filter((tag) => tag.id !== tagId).map((tag) => tag.text));
+      setAllTags((prevTags) => {
+        const updatedTags = prevTags.filter((tag) => tag.id !== tagId);
+        onChange(updatedTags.map((tag) => tag.text));
+        return updatedTags;
+      });
     },
-    [allTags, onChange],
+    [onChange],
   );
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'Tab') {
+      e.preventDefault(); // Prevent form submission or focus change
+      handleAddTag();
+    }
+  };
 
   return (
     <div>
-      <div className="mb-2">
+      <div className="mb-2 flex flex-wrap gap-2">
         {allTags.map((tag) => (
-          <div
-            key={tag.id}
-            id={tag.id.toString()}
-            className="mb-2 mr-2 inline-flex items-center gap-2 rounded-md bg-neutral-800 px-2 py-1"
-          >
+          <div key={tag.id} className="flex items-center gap-2 rounded-md bg-neutral-800 px-2 py-1">
             {tag.text}
-            <span
+            <button
+              type="button"
               onClick={() => handleRemoveTag(tag.id)}
               className="cursor-pointer transition-all hover:brightness-50"
             >
               <X size={16} />
-            </span>
+            </button>
           </div>
         ))}
       </div>
-      <form onSubmit={handleAddTag}>
-        <Input placeholder={placeholder} />
-      </form>
+
+      <Input
+        placeholder={placeholder}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown} // Handle Enter & Tab
+      />
     </div>
   );
 };

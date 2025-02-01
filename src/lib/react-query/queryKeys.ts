@@ -25,4 +25,8 @@ export const QUERY_KEYS = {
   // Analytic
   ANALYTIC_TODAY: 'analyticToday',
   ANALYTIC_ALL_TIME: 'analyticAllTime',
+
+  // Roadmap
+  ROADMAP_LIST: 'roadmapList',
+  ROADMAP_BY_ID: 'roadmapById',
 };
