@@ -18,7 +18,6 @@ const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
 });
-// };
 
 export async function generateMetadata(): Promise<Metadata> {
   const cookieStore = cookies();
