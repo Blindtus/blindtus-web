@@ -96,7 +96,7 @@ export default async function RootLayout({
       <body className={fontSans.variable}>
         <PlausibleProvider
           domain="blindtus.com"
-          customDomain="https://plausible.cl3tus.com"
+          customDomain="https://plausible.cl3tusdev.com"
           selfHosted
         >
           <HistoryProvider>
